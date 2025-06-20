@@ -20,7 +20,7 @@
              gondereniban    TYPE string,
              alicivkn        TYPE string,
              gonderenvkn     TYPE string,
-             islemtipi      TYPE string,
+             islemtipi       TYPE string,
              plaka           TYPE string,
              uyeisyerino     TYPE string,
              aliciadi        TYPE string,
@@ -95,7 +95,11 @@
     REPLACE 'GetExtreWithParamsResult' IN lv_json WITH 'ParamsResult'.
     REPLACE 'BankaHesaplariClassDetail' IN lv_json WITH 'ClassDetail'.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
-
+    IF ls_json_response-paramsresponse-paramsresult-accountdetail-classdetail-hatakodu IS NOT INITIAL.
+      APPEND VALUE #( messagetype = mc_error
+                      message = ls_json_response-paramsresponse-paramsresult-accountdetail-classdetail-hataaciklama ) TO et_error_messages.
+      RETURN.
+    ENDIF.
     DATA(lt_hesaplar) = ls_json_response-paramsresponse-paramsresult-accountdetail-classdetail-bankahesaplari-hesapbilgisidetail.
 
     READ TABLE  lt_hesaplar INTO DATA(ls_hesap) WITH KEY hesaptanimi-ibannumarasi = ms_bankpass-iban.

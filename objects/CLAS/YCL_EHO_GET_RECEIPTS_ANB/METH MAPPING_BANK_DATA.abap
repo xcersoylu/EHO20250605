@@ -53,6 +53,11 @@
       EXPORTING json = iv_json
       CHANGING data = ls_response_json ).
 
+    IF ls_response_json-sonuckodu > 0.
+      APPEND VALUE #( messagetype = mc_error message = ls_response_json-sonuckoduaciklama ) TO et_error_messages.
+      return.
+    ENDIF.
+
     READ TABLE ls_response_json-ekstreler INTO DATA(ls_account) WITH KEY hesapbilgisi-iban = ms_bankpass-iban.
     LOOP AT ls_account-muhasebekayitlari INTO DATA(ls_muhasebekayitlari).
       lv_sequence_no += 1.
@@ -92,22 +97,22 @@
       ENDIF.
     ENDLOOP.
 *    IF sy-subrc = 0.
-      APPEND VALUE #( companycode = ms_bankpass-companycode
-                      glaccount = ms_bankpass-glaccount
-                      valid_from = mv_startdate
-                      account_no = ms_bankpass-bankaccount
-                      branch_no = ms_bankpass-branch_code
-                      branch_name_description = ycl_eho_utils=>get_branch_name(
-                                                  iv_companycode = ms_bankpass-companycode
-                                                  iv_bank_code   = ms_bankpass-bank_code
-                                                  iv_branch_code = ms_bankpass-branch_code
-                                                )
-                      currency = ms_bankpass-currency
-                      opening_balance =  ls_account-hesapbilgisi-acilisbakiyesi
-                      closing_balance = ls_account-hesapbilgisi-kapanisbakiyesi
-                      bank_id =  ''
-                      account_id = ''
-                      bank_code =   ms_bankpass-bank_code
-      ) TO  et_bank_balance.
+    APPEND VALUE #( companycode = ms_bankpass-companycode
+                    glaccount = ms_bankpass-glaccount
+                    valid_from = mv_startdate
+                    account_no = ms_bankpass-bankaccount
+                    branch_no = ms_bankpass-branch_code
+                    branch_name_description = ycl_eho_utils=>get_branch_name(
+                                                iv_companycode = ms_bankpass-companycode
+                                                iv_bank_code   = ms_bankpass-bank_code
+                                                iv_branch_code = ms_bankpass-branch_code
+                                              )
+                    currency = ms_bankpass-currency
+                    opening_balance =  ls_account-hesapbilgisi-acilisbakiyesi
+                    closing_balance = ls_account-hesapbilgisi-kapanisbakiyesi
+                    bank_id =  ''
+                    account_id = ''
+                    bank_code =   ms_bankpass-bank_code
+    ) TO  et_bank_balance.
 *    ENDIF.
   ENDMETHOD.

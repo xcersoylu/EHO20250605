@@ -251,6 +251,15 @@
     "DOMVALUE_L":"EKT",
     "DOMVALUE_H":"",
     "APPVAL":""
+   },
+   {
+    "DOMNAME":"YEHO_D_CLASS_SUFFIX",
+    "AS4LOCAL":"N",
+    "VALPOS":23,
+    "AS4VERS":0,
+    "DOMVALUE_L":"AKT",
+    "DOMVALUE_H":"",
+    "APPVAL":""
    }
   ]
  },
@@ -502,6 +511,17 @@
    },
    {
     "DOMNAME":"YEHO_D_CLASS_SUFFIX",
+    "DDLANGUAGE":"E",
+    "AS4LOCAL":"N",
+    "VALPOS":23,
+    "AS4VERS":0,
+    "DDTEXT":"Aktifbank",
+    "DOMVAL_LD":"",
+    "DOMVAL_HD":"",
+    "DOMVALUE_L":"AKT"
+   },
+   {
+    "DOMNAME":"YEHO_D_CLASS_SUFFIX",
     "DDLANGUAGE":"T",
     "AS4LOCAL":"N",
     "VALPOS":1,
@@ -741,6 +761,17 @@
     "DOMVAL_LD":"",
     "DOMVAL_HD":"",
     "DOMVALUE_L":"EKT"
+   },
+   {
+    "DOMNAME":"YEHO_D_CLASS_SUFFIX",
+    "DDLANGUAGE":"T",
+    "AS4LOCAL":"N",
+    "VALPOS":23,
+    "AS4VERS":0,
+    "DDTEXT":"Aktifbank",
+    "DOMVAL_LD":"",
+    "DOMVAL_HD":"",
+    "DOMVALUE_L":"AKT"
    }
   ]
  },

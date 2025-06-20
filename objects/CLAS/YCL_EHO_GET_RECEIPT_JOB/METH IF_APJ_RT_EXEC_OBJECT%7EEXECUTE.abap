@@ -74,7 +74,7 @@
                 EXPORTING
                   is_bankpass = ls_bankpass
                   iv_startdate = lv_startdate
-                  iv_enddate = lv_enddate
+                  iv_enddate = lv_startdate "lv_enddate
                 RECEIVING
                   ro_object   = DATA(lo_object)
               ).

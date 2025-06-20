@@ -46,24 +46,26 @@
     DATA ls_offline_data TYPE yeho_t_offlinedt.
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
-    data(lv_json) = iv_json.
-    REPLACE 'SorgulaHesapHareketZamanIleResponse' in lv_json WITH 'response'.
-    REPLACE 'SorgulaHesapHareketZamanIleResult' in lv_json WITH 'result'.
+    DATA(lv_json) = iv_json.
+    REPLACE 'SorgulaHesapHareketZamanIleResponse' IN lv_json WITH 'response'.
+    REPLACE 'SorgulaHesapHareketZamanIleResult' IN lv_json WITH 'result'.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
 
-*    READ TABLE ls_json_response-response INTO DATA(ls_response) WITH KEY result-hesapno = ms_bankpass-iban.
-*    CHECK sy-subrc IS INITIAL.
-
+    IF ls_json_response-response-result-hatakodu <> '00'.
+      APPEND VALUE #( messagetype = mc_error message = ls_json_response-response-result-hataack ) TO et_error_messages.
+      RETURN.
+    ENDIF.
+    CHECK ls_json_response-response-result-hesapno = ms_bankpass-iban.
     LOOP AT ls_json_response-response-result-hareketdetay-hareketlerdetay INTO DATA(ls_hareketdetay).
       lv_sequence_no += 1.
-      ls_offline_data-companycode = ms_bankpass-companycode.
-      ls_offline_data-sequence_no      = lv_sequence_no.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
+      ls_offline_data-companycode     = ms_bankpass-companycode.
+      ls_offline_data-sequence_no     = lv_sequence_no.
+      ls_offline_data-glaccount       = ms_bankpass-glaccount.
       ls_offline_data-description     = ls_hareketdetay-aciklama.
-      ls_offline_data-amount        = ls_hareketdetay-tutar.
-      ls_offline_data-receipt_no    = ls_hareketdetay-dekontno.
+      ls_offline_data-amount          = ls_hareketdetay-tutar.
+      ls_offline_data-receipt_no      = ls_hareketdetay-dekontno.
       ls_offline_data-current_balance = ls_hareketdetay-bakiye.
-      ls_offline_data-debit_credit  = ls_hareketdetay-borcalacak.
+      ls_offline_data-debit_credit    = ls_hareketdetay-borcalacak.
 
       IF ls_hareketdetay-borcalacak EQ 'B'.
         ls_offline_data-debtor_vkn   = ls_hareketdetay-tcknvkn.

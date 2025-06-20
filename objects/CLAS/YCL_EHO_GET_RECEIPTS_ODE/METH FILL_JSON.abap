@@ -1,10 +1,10 @@
   METHOD fill_json.
     TYPES : BEGIN OF ty_generalassociationcoderep,
-              associationcode TYPE string,
-              usercode        TYPE string,
-              password        TYPE string,
-              startdate       TYPE string,
-              enddate         TYPE string,
+              association TYPE string,
+              usercode    TYPE string,
+              password    TYPE string,
+              startdate   TYPE string,
+              enddate     TYPE string,
             END OF ty_generalassociationcoderep,
             BEGIN OF ty_json,
               generalassociationcoderep TYPE ty_generalassociationcoderep,
@@ -17,10 +17,23 @@
     DATA(lv_enddate) = mv_enddate+0(4) && '-' &&
                        mv_enddate+4(2) && '-' &&
                        mv_enddate+6(2).
-    ls_json-generalassociationcoderep = VALUE #( associationcode = ms_bankpass-service_user
-                                                 usercode = ms_bankpass-service_user
-                                                 password = ms_bankpass-service_password
-                                                 startdate = lv_startdate
-                                                 enddate = lv_enddate ).
-    rv_json = /ui2/cl_json=>serialize( EXPORTING data = ls_json pretty_name = 'X' ).
+
+    CONCATENATE
+    '{'
+        '"GeneralAssociationCodeReportMainProcess": {'
+           '"association": "' ms_bankpass-service_user '",'
+            '"userCode": "' ms_bankpass-service_user '",'
+            '"password": "' ms_bankpass-service_password '",'
+            '"startDate": "' lv_startdate '",'
+            '"endDate": "' lv_enddate ' "'
+        '}'
+    '}' INTO rv_json.
+
+
+*    ls_json-generalassociationcoderep = VALUE #( associationcode = ms_bankpass-service_user
+*                                                 usercode = ms_bankpass-service_user
+*                                                 password = ms_bankpass-service_password
+*                                                 startdate = lv_startdate
+*                                                 enddate = lv_enddate ).
+*    rv_json = /ui2/cl_json=>serialize( EXPORTING data = ls_json pretty_name = 'X' ).
   ENDMETHOD.

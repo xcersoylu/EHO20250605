@@ -7,9 +7,9 @@
     "DDLXNAME":"YEHO_DDL_C_BANKPASS",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2025-02-06",
-    "CHANGED_AT":"11:56:58",
-    "UUID":"DD978388F9811EEFB9902EFB037EC36C",
+    "CHANGED_ON":"2025-06-11",
+    "CHANGED_AT":"08:16:10",
+    "UUID":"FA163EBBCF7E1FE091D38AA228D384E1",
     "ABAP_LANGUAGE_VERSION":"5"
    }
   ]
@@ -34,7 +34,7 @@
     "DDLXNAME":"YEHO_DDL_C_BANKPASS",
     "VERSION":"A",
     "UUID":"",
-    "SOURCE":"@Metadata.layer: #CORE\r\nannotate entity YEHO_DDL_C_BANKPASS\r\n    with \r\n{\r\n  @UI.facet: [ { id:            'Bank',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'Banka Kullanıcı ve Şifreler',\r\n                 position:      10 }  ]    \r\n    @UI : { lineItem: [{  position: 10 }] , identification: [{  position: 10 }] }\r\n    Companycode;\r\n    @UI : { lineItem: [{  position: 20 }] , identification: [{  position: 20 }] }\r\n    Glaccount;\r\n    @UI : { lineItem: [{  position: 30 }] , identification: [{  position: 30 }] }\r\n    Currency;\r\n    @UI : { lineItem: [{  position: 40 }] , identification: [{  position: 40 }] }\r\n    Bankaccount;\r\n    @UI : { lineItem: [{  position: 50 }] , identification: [{  position: 50 }] }\r\n    Iban;\r\n    @UI : { lineItem: [{  position: 60 }] , identification: [{  position: 60 }] }\r\n    BankCode;\r\n    @UI : { lineItem: [{  position: 70 }] , identification: [{  position: 70 }] }\r\n    BranchCode;\r\n    @UI : { lineItem: [{  position: 80 }] , identification: [{  position: 80 }] }\r\n    FirmCode;\r\n    @UI : { lineItem: [{  position: 90 }] , identification: [{  position: 90 }] }\r\n    ServiceUser;\r\n    @UI : { lineItem: [{  position: 100 }] , identification: [{  position: 100 }] }\r\n    ServicePassword;\r\n    @UI : { lineItem: [{  position: 110 }] , identification: [{  position: 110 }] }\r\n    OwnerTitle;\r\n    @UI : { lineItem: [{  position: 120 }] , identification: [{  position: 120 }] }\r\n    OwnerDescription;\r\n    @UI : { lineItem: [{  position: 125 }] , identification: [{  position: 125 }] }\r\n    Suffix;    \r\n    @UI : { lineItem: [{  position: 130 }] , identification: [{  position: 130 }] }\r\n    ConnectionType;\r\n    @UI : { lineItem: [{  position: 140 }] , identification: [{  position: 140 }] }\r\n    RfcDestination;\r\n    @UI : { lineItem: [{  position: 150 }] , identification: [{  position: 150 }] }\r\n    ServiceUrl;\r\n    @UI : { lineItem: [{  position: 160 }] , identification: [{  position: 160 }] }\r\n    NamespaceUrl;\r\n    @UI : { lineItem: [{  position: 170 }] , identification: [{  position: 170 }] }\r\n    @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_CLASS_SUFFIX', element: 'Value' }}]    \r\n    ClassSuffix;\r\n    @UI : { lineItem: [{  position: 180 }] , identification: [{  position: 180 }] }\r\n    @EndUserText.label:'CPI Kullanıcı'\r\n    CpiUser;\r\n    @UI : { lineItem: [{  position: 190 }] , identification: [{  position: 190 }] }\r\n    @EndUserText.label:'CPI Şifre'\r\n    CpiPassword;\r\n    @UI : { lineItem: [{  position: 200 }] , identification: [{  position: 200 }] }\r\n    @EndUserText.label:'CPI URL'\r\n    CpiUrl;\r\n    @UI : { lineItem: [{  position: 210 }] , identification: [{  position: 210 }] }\r\n    @EndUserText.label:'Ek Alan 1'\r\n    AdditionalField1;\r\n    @UI : { lineItem: [{  position: 220 }] , identification: [{  position: 220 }] }\r\n    @EndUserText.label:'Ek Alan 2'\r\n    AdditionalField2;\r\n    @UI : { lineItem: [{  position: 230 }] , identification: [{  position: 230 }] }\r\n    @EndUserText.label:'Ek Alan 3'\r\n    AdditionalField3;\r\n    \r\n}"
+    "SOURCE":"@Metadata.layer: #CORE\r\nannotate entity YEHO_DDL_C_BANKPASS\r\n    with \r\n{\r\n  @UI.facet: [ { id:            'Bank',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'Banka Kullanıcı ve Şifreler',\r\n                 position:      10 }  ]    \r\n    @UI : { lineItem: [{  position: 10 }] , identification: [{  position: 10 }] }\r\n    Companycode;\r\n    @UI : { lineItem: [{  position: 20 }] , identification: [{  position: 20 }] }\r\n    Glaccount;\r\n    @UI : { lineItem: [{  position: 30 }] , identification: [{  position: 30 }] }\r\n    Currency;\r\n    @UI : { lineItem: [{  position: 40 }] , identification: [{  position: 40 }] }\r\n    Bankaccount;\r\n    @UI : { lineItem: [{  position: 50 }] , identification: [{  position: 50 }] }\r\n    Iban;\r\n    @UI : { lineItem: [{  position: 60 }] , identification: [{  position: 60 }] }\r\n    BankCode;\r\n    @UI : { lineItem: [{  position: 70 }] , identification: [{  position: 70 }] }\r\n    BranchCode;\r\n    @UI : { lineItem: [{  position: 80 }] , identification: [{  position: 80 }] }\r\n    FirmCode;\r\n    @UI : { lineItem: [{  position: 90 }] , identification: [{  position: 90 }] }\r\n    ServiceUser;\r\n    @UI : { lineItem: [{  position: 100 }] , identification: [{  position: 100 }] }\r\n    ServicePassword;\r\n    @UI : { lineItem: [{  position: 110 }] , identification: [{  position: 110 }] }\r\n    OwnerTitle;\r\n    @UI : { lineItem: [{  position: 120 }] , identification: [{  position: 120 }] }\r\n    OwnerDescription;\r\n    @UI : { lineItem: [{  position: 125 }] , identification: [{  position: 125 }] }\r\n    Suffix;    \r\n    @UI : { lineItem: [{  position: 130 }] , identification: [{  position: 130 }] }\r\n    ConnectionType;\r\n    @UI : { lineItem: [{  position: 140 }] , identification: [{  position: 140 }] }\r\n    RfcDestination;\r\n    @UI : { lineItem: [{  position: 150 }] , identification: [{  position: 150 }] }\r\n    ServiceUrl;\r\n    @UI : { lineItem: [{  position: 160 }] , identification: [{  position: 160 }] }\r\n    NamespaceUrl;\r\n    @UI : { lineItem: [{  position: 170 }] , identification: [{  position: 170 }] }\r\n    @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_EHO_CLASS_SUFFIX', element: 'Value' }}]    \r\n    ClassSuffix;\r\n    @UI : { lineItem: [{  position: 180 }] , identification: [{  position: 180 }] }\r\n    @EndUserText.label:'CPI Kullanıcı'\r\n    CpiUser;\r\n    @UI : { lineItem: [{  position: 190 }] , identification: [{  position: 190 }] }\r\n    @EndUserText.label:'CPI Şifre'\r\n    CpiPassword;\r\n    @UI : { lineItem: [{  position: 200 }] , identification: [{  position: 200 }] }\r\n    @EndUserText.label:'CPI URL'\r\n    CpiUrl;\r\n    @UI : { lineItem: [{  position: 210 }] , identification: [{  position: 210 }] }\r\n    @EndUserText.label:'Ek Alan 1'\r\n    AdditionalField1;\r\n    @UI : { lineItem: [{  position: 220 }] , identification: [{  position: 220 }] }\r\n    @EndUserText.label:'Ek Alan 2'\r\n    AdditionalField2;\r\n    @UI : { lineItem: [{  position: 230 }] , identification: [{  position: 230 }] }\r\n    @EndUserText.label:'Ek Alan 3'\r\n    AdditionalField3;\r\n    @UI : { lineItem: [{  position: 240 }] , identification: [{  position: 240 }] }\r\n    ClassName;    \r\n    \r\n}"
    }
   ]
  },
@@ -146,6 +146,20 @@
     "NAME":"UI.LINEITEM$1$.POSITION",
     "ELEMENT_TYPE":"S",
     "VALUE":"70"
+   },
+   {
+    "DDLXNAME":"YEHO_DDL_C_BANKPASS",
+    "ELEMENT":"CLASSNAME",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"240"
+   },
+   {
+    "DDLXNAME":"YEHO_DDL_C_BANKPASS",
+    "ELEMENT":"CLASSNAME",
+    "NAME":"UI.LINEITEM$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"240"
    },
    {
     "DDLXNAME":"YEHO_DDL_C_BANKPASS",
@@ -584,8 +598,8 @@
     "EXTENDED_ARTIFACT":"YEHO_DDL_C_BANKPASS",
     "VARIANT":"",
     "LAYER":1500,
-    "DT_UUID":"DD978388F9811EEFB9902EFB037EC36C",
-    "RT_HASH":"798402ACA845646A120FF06C2447F20915197CEF",
+    "DT_UUID":"FA163EBBCF7E1FE091D38AA228D384E1",
+    "RT_HASH":"2FE7C15004BDDA2F87CB7C0E1E0D3BBCF88E288D",
     "GEN_VERSION":"0",
     "TYPE":"0"
    }

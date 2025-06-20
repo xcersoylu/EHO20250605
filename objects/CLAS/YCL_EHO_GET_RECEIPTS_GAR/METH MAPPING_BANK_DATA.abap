@@ -280,6 +280,11 @@
     ENDLOOP.
 
     """"""""""""""""""""""""""""""""""""""""""""""""""
+    IF ls_json_response-result-return_code <> '200'.
+      APPEND VALUE #( messagetype = mc_error message = ls_json_response-result-message_text ) TO et_error_messages.
+      RETURN.
+    ENDIF.
+
     DATA(lv_line) = lines( ls_json_response-transaction ).
     APPEND VALUE #( companycode = ms_bankpass-companycode
                     glaccount = ms_bankpass-glaccount

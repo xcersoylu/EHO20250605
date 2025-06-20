@@ -1,54 +1,4 @@
   METHOD mapping_bank_data.
-*    TYPES:
-*      BEGIN OF mty_balance.
-*    TYPES accountnumber     TYPE string.
-*    TYPES accountsuffix     TYPE string.
-*    TYPES branchname        TYPE string.
-*    TYPES accountalias      TYPE string.
-*    TYPES balance           TYPE string.
-*    TYPES withholdingamount TYPE string.
-*    TYPES opendate          TYPE string.
-*    TYPES closedate         TYPE string.
-*    TYPES fec               TYPE string.
-*    TYPES fecname           TYPE string.
-*    TYPES iban              TYPE string.
-*    TYPES maturityend       TYPE string.
-*    TYPES isactive          TYPE string.
-*    TYPES accounttype       TYPE string.
-*    TYPES END OF mty_balance .
-*    TYPES:
-*      BEGIN OF mty_hesap.
-*    TYPES businesskey                TYPE string.
-*    TYPES trandate                   TYPE string.
-*    TYPES amount                     TYPE string.
-*    TYPES comment                    TYPE string.
-*    TYPES channelid                  TYPE string.
-*    TYPES fec                        TYPE string.
-*    TYPES fecname                    TYPE string.
-*    TYPES tranbranchid               TYPE string.
-*    TYPES tranbranchname             TYPE string.
-*    TYPES systemdate                 TYPE string.
-*    TYPES sendertaxnumber            TYPE string.
-*    TYPES sendername                 TYPE string.
-*    TYPES senderaccountnumber        TYPE string.
-*    TYPES senderphonenumber          TYPE string.
-*    TYPES senderbankcode             TYPE string.
-*    TYPES senderbranchcode           TYPE string.
-*    TYPES transactiontypedescription TYPE string.
-*    TYPES transactiontype            TYPE string.
-*    TYPES receivertaxnumber          TYPE string.
-*    TYPES receivername               TYPE string.
-*    TYPES receiveraccountnumber      TYPE string.
-*    TYPES receiverphonenumber        TYPE string.
-*    TYPES receiverbankcode           TYPE string.
-*    TYPES receiverbranchcode         TYPE string.
-*    TYPES balance                    TYPE string.
-*    TYPES END OF mty_hesap .
-*    TYPES:
-*      BEGIN OF mty_result.
-*    TYPES hesaphareketleriresult TYPE TABLE OF mty_hesap WITH DEFAULT KEY.
-*    TYPES END OF mty_result .
-*    DATA ls_json_response TYPE mty_result.
     TYPES: BEGIN OF ty_customer_transaction,
              results                    TYPE string,
              success                    TYPE string,
@@ -113,6 +63,13 @@
     REPLACE 'GetCustomerTransactionDetailsResult' IN lv_json WITH 'TransactionDetailsResult'.
     REPLACE 'CustomerTransactionDetailResponseModel' IN lv_json WITH 'TransactionDetailResponseModel'.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
+
+    IF ls_json_response-transactiondetailsresponse-transactiondetailsresult-errorcode IS NOT INITIAL.
+      APPEND VALUE #( messagetype = mc_error
+                      message = ls_json_response-transactiondetailsresponse-transactiondetailsresult-errormessage ) TO et_error_messages.
+      RETURN.
+    ENDIF.
+
     lv_opening_balance = get_account_balance(  ).
     LOOP AT ls_json_response-transactiondetailsresponse-transactiondetailsresult-value-transactiondetailresponsemodel INTO DATA(ls_detay).
       lv_sequence_no += 1.

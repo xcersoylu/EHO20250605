@@ -1,6 +1,6 @@
   METHOD mapping_bank_data.
     TYPES:
-      BEGIN OF mty_detail,
+      BEGIN OF ty_transaction,
         transactiontype               TYPE string,
         currentbalance                TYPE string,
         transactionamount             TYPE string,
@@ -16,35 +16,38 @@
         identityno                    TYPE string,
         title1                        TYPE string,
         transactionno                 TYPE string,
-      END OF mty_detail .
+        errorcode                     TYPE string,
+        senderbank                    TYPE string,
+        transactionid                 TYPE string,
+      END OF ty_transaction .
     TYPES:
-      BEGIN OF mty_hesap,
+      BEGIN OF ty_hesap,
+        branchinfo       TYPE string,
+        usablebalance    TYPE string,
+        startbalance     TYPE string,
+        endbalance       TYPE string,
+        errorcode        TYPE string,
+        errortext        TYPE string,
+        balance          TYPE string,
+        blockbalance     TYPE string,
+        transactiontable TYPE TABLE OF ty_transaction WITH DEFAULT KEY.
+    TYPES END OF ty_hesap .
 
-        branchinfo    TYPE string,
-        usablebalance TYPE string,
-        startbalance  TYPE string,
-        endbalance    TYPE string,
-        errorcode     TYPE string,
-        errortext     TYPE string,
-        balance       TYPE string,
-        blockbalance  TYPE string,
-        detay         TYPE TABLE OF mty_detail WITH DEFAULT KEY.
-    TYPES END OF mty_hesap .
-    TYPES:
-      BEGIN OF mty_result.
-    TYPES hesaphareketleriresult TYPE TABLE OF mty_hesap WITH DEFAULT KEY.
-    TYPES END OF mty_result .
-    DATA ls_json_response   TYPE mty_result.
+    TYPES BEGIN OF ty_response.
+    TYPES getstatementinforesponse TYPE ty_hesap.
+    TYPES END OF ty_response .
+
+    DATA ls_json_response   TYPE ty_response.
     DATA lv_sequence_no     TYPE int4.
     DATA ls_offline_data    TYPE yeho_t_offlinedt.
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
     /ui2/cl_json=>deserialize( EXPORTING json = iv_json CHANGING data = ls_json_response ).
 
-    READ TABLE ls_json_response-hesaphareketleriresult INTO DATA(ls_hesap) INDEX 1.
+*    READ TABLE ls_json_response-getstatementinforesponse- INTO DATA(ls_hesap) INDEX 1.
 
-    lv_opening_balance = ls_hesap-startbalance.
-    lv_closing_balance = ls_hesap-endbalance.
+    lv_opening_balance = ls_json_response-getstatementinforesponse-startbalance.
+    lv_closing_balance = ls_json_response-getstatementinforesponse-endbalance.
 
 *    SPLIT ls_hesap-branchinfo AT space INTO TABLE data(lt_sube_str).
 *    data(lv_lncnt) = lines( lt_sube_str ).
@@ -57,7 +60,7 @@
 *      ENDIF.
 *    ENDLOOP.
 
-    LOOP AT ls_hesap-detay INTO DATA(ls_detay).
+    LOOP AT ls_json_response-getstatementinforesponse-transactiontable INTO DATA(ls_detay).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
       ls_offline_data-companycode =  ms_bankpass-companycode.

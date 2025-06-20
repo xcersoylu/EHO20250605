@@ -19,12 +19,12 @@
                 'T'
                 '00:00:00.000'
                 INTO lv_start_date.
-      CONCATENATE mv_enddate+0(4) '-'
-                  mv_enddate+4(2) '-'
-                  mv_enddate+6(2)
-                  'T'
-                  '23:59:59.999'
-                  INTO lv_end_date.
+    CONCATENATE mv_enddate+0(4) '-'
+                mv_enddate+4(2) '-'
+                mv_enddate+6(2)
+                'T'
+                '23:59:59.999'
+                INTO lv_end_date.
     ls_json = VALUE #( consent_id     = ms_bankpass-service_password
                        unit_num       = ms_bankpass-branch_code
                        account_num    = ms_bankpass-bankaccount
