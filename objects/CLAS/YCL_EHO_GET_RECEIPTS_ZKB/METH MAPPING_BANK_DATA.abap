@@ -110,7 +110,8 @@
       ls_offline_data-sequence_no  = lv_sequence_no.
       ls_offline_data-glaccount    = ms_bankpass-glaccount.
       ls_offline_data-companycode  = ms_bankpass-companycode.
-      ls_offline_data-description = <fs_hareket>-aciklamalar.
+      ls_offline_data-currency     = ms_bankpass-currency.
+      ls_offline_data-description  = <fs_hareket>-aciklamalar.
 
       IF <fs_hareket>-harekettutari LT 0.
         ls_offline_data-debit_credit = 'A'.

@@ -17,11 +17,4 @@
                       _end_date = lv_end_date ).
 
     rv_json = /ui2/cl_json=>serialize( EXPORTING data = ls_json pretty_name = 'X' ).
-*rv_json =
-*'{' &&
-*  '"uid": "U08545648C",' &&
-*  '"pwd": "XPSD58DNQ1",' &&
-*  '"BeginDate": "18.05.2025 00:00:01",' &&
-*  '"EndDate": "20.05.2025 00:00:01"' &&
-*'}'.
   ENDMETHOD.

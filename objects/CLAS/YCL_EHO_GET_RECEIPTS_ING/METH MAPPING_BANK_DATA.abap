@@ -45,20 +45,51 @@
               subekodu          TYPE string,
               tur               TYPE string,
               vkntckn           TYPE string,
-            END OF ty_hesapbilgileri.
-    DATA ls_json_response   TYPE ty_hesapbilgileri.
+            END OF ty_hesapbilgileri,
+            tt_hesapbilgileri type table of ty_hesapbilgileri WITH EMPTY KEY,
+            BEGIN OF ty_returnmessage,
+              returnmesaj TYPE string,
+              returnsonuc TYPE string,
+            END OF ty_returnmessage,
+            BEGIN OF ty_hesapbilgileriwithtoken,
+            hesapbilgileriwithtoken type ty_hesapbilgileri,
+            END OF TY_HESAPBILGILERIWITHTOKEN,
+            tt_hesapbilgileriwithtoken type table of ty_hesapbilgileriwithtoken with EMPTY KEY,
+            BEGIN OF ty_result,
+              hesapbilgileri TYPE ty_hesapbilgileriwithtoken,
+              tokeninfo      TYPE string,
+              userip         TYPE string,
+              wso2tokenuser  TYPE string,
+              result         TYPE ty_returnmessage,
+            END OF ty_result,
+            BEGIN OF ty_response,
+              tokenresult TYPE ty_result,
+            END OF ty_response,
+            BEGIN OF ty_json,
+              tokenresponse TYPE ty_response,
+            END OF ty_json.
+    DATA ls_json_response   TYPE ty_json.
     DATA lv_sequence_no     TYPE int4.
     DATA ls_offline_data    TYPE yeho_t_offlinedt.
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
-    /ui2/cl_json=>deserialize( EXPORTING json = iv_json CHANGING data = ls_json_response ).
+    DATA lv_json TYPE string.
+    lv_json = iv_json.
+    REPLACE 'GetAccountActivitiesWithTokenResponse' IN lv_json WITH 'tokenresponse'.
+    REPLACE 'GetAccountActivitiesWithTokenResult' IN lv_json WITH 'tokenresult'.
+    /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
 
-    LOOP AT ls_json_response-hareketler-hareketwithtoken ASSIGNING FIELD-SYMBOL(<fs_hareket>).
+    IF ls_json_response-tokenresponse-tokenresult-result-returnsonuc <> '0'.
+      APPEND VALUE #( messagetype = mc_error message = ls_json_response-tokenresponse-tokenresult-result-returnmesaj ) TO et_error_messages.
+      RETURN.
+    ENDIF.
+    LOOP AT ls_json_response-tokenresponse-tokenresult-hesapbilgileri-hesapbilgileriwithtoken-hareketler-hareketwithtoken ASSIGNING FIELD-SYMBOL(<fs_hareket>).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode  = ms_bankpass-companycode.
+      ls_offline_data-glaccount    = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no  = lv_sequence_no.
+      ls_offline_data-currency     = ms_bankpass-currency.
       ls_offline_data-amount       = <fs_hareket>-tutar.
       ls_offline_data-description  = <fs_hareket>-aciklama1 && '-' && <fs_hareket>-aciklama2.
       ls_offline_data-debit_credit = <fs_hareket>-tip.
@@ -99,7 +130,7 @@
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
     ELSE.
-      lv_opening_balance  = lv_closing_balance = ls_json_response-gunacilisbakiye.
+      lv_opening_balance  = lv_closing_balance = ls_json_response-tokenresponse-tokenresult-hesapbilgileri-hesapbilgileriwithtoken-gunacilisbakiye.
     ENDIF.
 
     APPEND VALUE #( companycode = ms_bankpass-companycode

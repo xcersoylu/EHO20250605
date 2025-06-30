@@ -92,9 +92,10 @@ TYPES: BEGIN OF ty_json,
 
     LOOP AT ls_hesap-hesap-detay INTO DATA(ls_detay).
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-glaccount   = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no = lv_sequence_no.
+      ls_offline_data-currency    = ms_bankpass-currency.
       REPLACE ',' in ls_Detay-tutar WITH '.'.
       ls_offline_data-amount = ls_detay-tutar.
       ls_offline_data-description = ls_detay-aciklama.

@@ -60,7 +60,8 @@
     LOOP AT ls_hesaplar-hesap-hareketler INTO DATA(ls_hareketler).
       ls_offline_data-sequence_no = ls_hareketler-hareket-sirano.
       ls_offline_data-glaccount   = ms_bankpass-glaccount.
-      ls_offline_data-companycode   = ms_bankpass-companycode.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-amount      = ls_hareketler-hareket-tutar.
       ls_offline_data-operationalglaccount = ls_hesaplar-hesap-hesapno.
       IF ls_hareketler-hareket-uzunaciklama IS INITIAL.

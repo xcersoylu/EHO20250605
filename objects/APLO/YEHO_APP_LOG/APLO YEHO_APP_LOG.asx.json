@@ -31,6 +31,10 @@
   [
    {
     "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC"
+   },
+   {
+    "OBJECT":"YEHO_APP_LOG",
     "SUBOBJECT":"YEHO_BANK_API"
    }
   ]
@@ -44,6 +48,12 @@
     "OBJECT":"YEHO_APP_LOG",
     "SUBOBJECT":"YEHO_BANK_API",
     "SUBOBJTXT":"Bank API Log"
+   },
+   {
+    "SPRAS":"T",
+    "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC",
+    "SUBOBJTXT":"Otomatik Kayıt Log"
    },
    {
     "SPRAS":"T",

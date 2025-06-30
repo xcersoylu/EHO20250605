@@ -1,68 +1,4 @@
   METHOD mapping_bank_data.
-*    TYPES : BEGIN OF ty_hareketler,
-*              tarih          TYPE string,
-*              saat           TYPE string,
-*              sirano         TYPE string,
-*              harekettutari  TYPE string,
-*              sonbakiye      TYPE string,
-*              aciklamalar    TYPE string,
-*              musterino      TYPE string,
-*              islemkodu      TYPE string,
-*              referansno     TYPE string,
-*              karsihesapvkno TYPE string,
-*              dekontno       TYPE string,
-*              ekbilgi1       TYPE string,
-*              ekbilgi2       TYPE string,
-*              ekbilgi3       TYPE string,
-*              ekbilgi4       TYPE string,
-*            END OF ty_hareketler,
-*            tt_hareketler TYPE TABLE OF ty_hareketler WITH DEFAULT KEY,
-*            BEGIN OF ty_hareketdetay,
-*              hesaphareketidetail TYPE tt_hareketler,
-*            END OF ty_hareketdetay,
-*            BEGIN OF ty_hesap,
-*              hesapturu                   TYPE string,
-*              hesapadi                    TYPE string,
-*              musterino                   TYPE string,
-*              hesapcinsi                  TYPE string,
-*              hesapnumarasi               TYPE string,
-*              subenumarasi                TYPE string,
-*              subeadi                     TYPE string,
-*              acilistarihi                TYPE string,
-*              sonharekettarihi            TYPE string,
-*              bakiye                      TYPE string,
-*              blokemeblag                 TYPE string,
-*              kullanilabilirbakiye        TYPE string,
-*              kredilimiti                 TYPE string,
-*              kredilikullanilabilirbakiye TYPE string,
-*              vadetarihi                  TYPE string,
-*              faizorani                   TYPE string,
-*            END OF ty_hesap,
-*            BEGIN OF ty_hesapdetay,
-*              hesaptanimi      TYPE ty_hesap,
-*              hesaphareketleri TYPE ty_hareketdetay,
-*            END OF ty_hesapdetay,
-*            tt_hesapdetay TYPE TABLE OF ty_hesapdetay WITH DEFAULT KEY,
-*            BEGIN OF ty_bankahesaplar,
-*              systarih           TYPE string,
-*              syssaat            TYPE string,
-*              hatakodu           TYPE string,
-*              hataaciklama       TYPE string,
-*              hesapbilgisidetail TYPE tt_hesapdetay,
-*            END OF ty_bankahesaplar,
-*            BEGIN OF ty_BankaHesaplariClassDetail,
-*            BankaHesaplariClassDetail type ty_bankahesaplar,
-*            END OF ty_BankaHesaplariClassDetail,
-*            BEGIN OF ty_accountdetail,
-*            accountdetail type ty_BankaHesaplariClassDetail,
-*            END OF ty_accountdetail,
-*            BEGIN OF ty_result,
-*            result type ty_accountdetail,
-*            END OF ty_result,
-*            BEGIN OF ty_root,
-*            response type ty_result,
-*            END OF ty_root.
-
     TYPES: BEGIN OF ty_hesap_hareketi_detail,
              tarih          TYPE string,
              saat           TYPE string,
@@ -157,9 +93,10 @@
     LOOP AT ls_hareketler-hesaphareketleri-hesaphareketidetail INTO DATA(ls_hareket).
 
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-glaccount   = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no = lv_sequence_no.
+      ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-description = ls_hareket-aciklamalar.
 
       IF ls_hareket-harekettutari > 0.

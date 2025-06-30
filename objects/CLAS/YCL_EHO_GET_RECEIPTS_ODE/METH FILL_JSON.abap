@@ -29,11 +29,4 @@
         '}'
     '}' INTO rv_json.
 
-
-*    ls_json-generalassociationcoderep = VALUE #( associationcode = ms_bankpass-service_user
-*                                                 usercode = ms_bankpass-service_user
-*                                                 password = ms_bankpass-service_password
-*                                                 startdate = lv_startdate
-*                                                 enddate = lv_enddate ).
-*    rv_json = /ui2/cl_json=>serialize( EXPORTING data = ls_json pretty_name = 'X' ).
   ENDMETHOD.

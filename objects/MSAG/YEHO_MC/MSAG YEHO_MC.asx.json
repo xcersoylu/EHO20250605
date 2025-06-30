@@ -308,6 +308,24 @@
     "DOKLRELES":"",
     "DOKLDATE":"0000-00-00",
     "DOKLTIME":"00:00:00"
+   },
+   {
+    "ID":"NA",
+    "OBJECT":"YEHO_MC018",
+    "LANGU":"D",
+    "TYP":"E",
+    "DOKVERSION":1,
+    "DOKSTATE":"N",
+    "DOKFORM":"S_DOCU_SHOW",
+    "DOKSTYLE":"S_DOCUS1",
+    "DOKFUSER":"SAP_CUSTOMER",
+    "DOKFRELES":"",
+    "DOKFDATE":"0000-00-00",
+    "DOKFTIME":"00:00:00",
+    "DOKLUSER":"SAP_CUSTOMER",
+    "DOKLRELES":"",
+    "DOKLDATE":"0000-00-00",
+    "DOKLTIME":"00:00:00"
    }
   ]
  },
@@ -494,6 +512,17 @@
    {
     "ID":"NA",
     "OBJECT":"YEHO_MC017",
+    "LANGU":"D",
+    "TYP":"E",
+    "VERSION":1,
+    "MASTERLANG":"X",
+    "TXTLINES":0,
+    "DOKSTATE":"N",
+    "SELFDEF":"3"
+   },
+   {
+    "ID":"NA",
+    "OBJECT":"YEHO_MC018",
     "LANGU":"D",
     "TYP":"E",
     "VERSION":1,
@@ -711,6 +740,12 @@
     "ARBGB":"YEHO_MC",
     "MSGNR":"017",
     "TEXT":"Durum Kodu: &1"
+   },
+   {
+    "SPRSL":"T",
+    "ARBGB":"YEHO_MC",
+    "MSGNR":"018",
+    "TEXT":"Kayıt Sayısı : &1 &2/&3/&4"
    }
   ]
  },
@@ -749,119 +784,126 @@
     "ARBGB":"YEHO_MC",
     "MSGNR":"001",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"002",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"003",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"004",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"005",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"006",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"007",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"008",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"009",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"010",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"011",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"012",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"013",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"014",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"015",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"016",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    },
    {
     "ARBGB":"YEHO_MC",
     "MSGNR":"017",
     "NAME":"SAP_CUSTOMER",
-    "DATUM":"2025-06-20",
+    "DATUM":"2025-06-30",
+    "SELFDEF":"3"
+   },
+   {
+    "ARBGB":"YEHO_MC",
+    "MSGNR":"018",
+    "NAME":"SAP_CUSTOMER",
+    "DATUM":"2025-06-30",
     "SELFDEF":"3"
    }
   ]

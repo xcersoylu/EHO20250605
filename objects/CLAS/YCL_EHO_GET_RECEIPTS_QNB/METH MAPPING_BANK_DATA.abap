@@ -107,11 +107,11 @@
                     ls_transaction-transactiondate+8(2)
                     INTO ls_offline_data-physical_operation_date.
       ENDIF.
-      ls_offline_data-currency = ms_bankpass-currency.
-      ls_offline_data-sender_iban = ls_transaction-opponentiban.
-      ls_offline_data-sender_bank = ls_transaction-opponentbank.
-      ls_offline_data-sender_branch = ls_transaction-opponentbranch.
-      ls_offline_data-transaction_type = ls_transaction-processcode.
+      ls_offline_data-currency          = ms_bankpass-currency.
+      ls_offline_data-sender_iban       = ls_transaction-opponentiban.
+      ls_offline_data-sender_bank       = ls_transaction-opponentbank.
+      ls_offline_data-sender_branch     = ls_transaction-opponentbranch.
+      ls_offline_data-transaction_type  = ls_transaction-processcode.
       IF ls_transaction-transactiondescription IS NOT INITIAL.
         ls_offline_data-description      = ls_transaction-transactiondescription.
       ELSEIF ls_transaction-eftreturndescription IS NOT INITIAL.

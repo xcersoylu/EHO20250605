@@ -49,9 +49,10 @@
       CLEAR : ls_offline_data.
 
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-glaccount   = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no = lv_sequence_no.
+      ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-description = ls_detail-description.
 
       IF ls_detail-amount > 0.

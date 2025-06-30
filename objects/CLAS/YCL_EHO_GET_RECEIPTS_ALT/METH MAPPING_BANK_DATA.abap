@@ -109,12 +109,9 @@
       ls_offline_data-companycode =  ms_bankpass-companycode.
       ls_offline_data-glaccount   =  ms_bankpass-glaccount.
       ls_offline_data-sequence_no =  lv_sequence_no.
-
-
+      ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-amount = ls_detay-harekettutari.
-
       ls_offline_data-description = ls_detay-aciklamalar.
-
       IF ls_detay-harekettutari GE 0.
         ls_offline_data-payee_vkn = ls_detay-gonderenvkn.
         ls_offline_data-debit_credit = 'A'.
@@ -124,7 +121,6 @@
         ls_offline_data-debit_credit = 'B'.
         ls_offline_data-sender_iban     = ls_detay-aliciiban.
       ENDIF.
-
       ls_offline_data-additional_field1 = ls_detay-ekbilgi1.
       ls_offline_data-additional_field2 = ls_detay-ekbilgi2.
       ls_offline_data-additional_field3 = ls_detay-ekbilgi3.

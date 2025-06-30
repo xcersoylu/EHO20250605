@@ -1,48 +1,4 @@
   METHOD mapping_bank_data.
-*    TYPES : BEGIN OF ty_hareket,
-*              tarih           TYPE string,
-*              saat            TYPE string,
-*              hareketsirano   TYPE string,
-*              miktar          TYPE string,
-*              bakiye          TYPE string,
-*              aciklama        TYPE string,
-*              karsihesapvkn   TYPE string,
-*              musteriaciklama TYPE string,
-*              lehdarhiban     TYPE string,
-*              borcalacak      TYPE string,
-*              karsisube       TYPE string,
-*              isl_id          TYPE string,
-*              islemturu       TYPE string,
-*            END OF ty_hareket,
-*            BEGIN OF ty_hareketler,
-*              hareket TYPE ty_hareket,
-*            END OF ty_hareketler,
-*            tt_hareketler TYPE TABLE OF ty_hareketler WITH EMPTY KEY,
-*            BEGIN OF ty_tanimlamalar,
-*              ibanno               TYPE string,
-*              hesapturu            TYPE string,
-*              hesapno              TYPE string,
-*              musterino            TYPE string,
-*              subekodu             TYPE string,
-*              subeadi              TYPE string,
-*              dovizturu            TYPE string,
-*              hesapacilistarihi    TYPE string,
-*              sonharekettarihi     TYPE string,
-*              bakiye               TYPE string,
-*              kullanilabilirbakiye TYPE string,
-*            END OF ty_tanimlamalar,
-*            BEGIN OF ty_hesap,
-*              tanimlamalar TYPE ty_tanimlamalar,
-*              hareketler   TYPE tt_hareketler,
-*            END OF ty_hesap,
-*            BEGIN OF ty_hesaplar,
-*              hesap TYPE ty_hesap,
-*            END OF ty_hesaplar,
-*            tt_hesaplar TYPE TABLE OF ty_hesaplar WITH EMPTY KEY,
-*            BEGIN OF ty_main_hesap,
-*              tarih    TYPE string,
-*              hesaplar TYPE tt_hesaplar,
-*            END OF ty_main_hesap.
     TYPES : BEGIN OF ty_hareket,
               tarih           TYPE string,
               saat            TYPE string,
@@ -103,7 +59,6 @@
     CHECK sy-subrc IS INITIAL.
 *    ls_list-last_updated_date_time  = ls_hesap-tanimlamalar-sonharekettarihi.
 
-*    LOOP AT ls_hesap-hesap-hareketler ASSIGNING FIELD-SYMBOL(<fs_hareket>).
     LOOP AT ls_hesap-hareketler-hareket ASSIGNING FIELD-SYMBOL(<fs_hareket>).
       CLEAR ls_offline_data.
       IF <fs_hareket>-tarih IS NOT INITIAL.
@@ -122,6 +77,7 @@
       ls_offline_data-companycode =  ms_bankpass-companycode.
       ls_offline_data-sequence_no  = lv_sequence_no.
       ls_offline_data-glaccount    = ms_bankpass-glaccount.
+      ls_offline_data-currency     = ms_bankpass-currency.
       ls_offline_data-description  = <fs_hareket>-aciklama.
       ls_offline_data-debit_credit = <fs_hareket>-borcalacak.
       IF ls_offline_data-debit_credit = 'A'.

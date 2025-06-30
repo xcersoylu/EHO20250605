@@ -61,10 +61,10 @@
     READ TABLE ls_response_json-ekstreler INTO DATA(ls_account) WITH KEY hesapbilgisi-iban = ms_bankpass-iban.
     LOOP AT ls_account-muhasebekayitlari INTO DATA(ls_muhasebekayitlari).
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
-
+      ls_offline_data-companycode  = ms_bankpass-companycode.
+      ls_offline_data-glaccount    = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no  = lv_sequence_no.
+      ls_offline_data-currency     = ms_bankpass-currency.
       ls_offline_data-amount       = ls_muhasebekayitlari-tutar.
       ls_offline_data-description  = ls_muhasebekayitlari-aciklama.
       ls_offline_data-debit_credit = ls_muhasebekayitlari-borcalacak.

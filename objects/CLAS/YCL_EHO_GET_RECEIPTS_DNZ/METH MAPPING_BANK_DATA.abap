@@ -85,11 +85,12 @@
     LOOP AT ls_account-transactions ASSIGNING FIELD-SYMBOL(<fs_hareket>).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode  = ms_bankpass-companycode.
+      ls_offline_data-glaccount    = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no  = lv_sequence_no.
+      ls_offline_data-currency     = ms_bankpass-currency.
       ls_offline_data-amount       = <fs_hareket>-amount.
-      ls_offline_data-description    = <fs_hareket>-bankdescription.
+      ls_offline_data-description  = <fs_hareket>-bankdescription.
       ls_offline_data-debit_credit = <fs_hareket>-debitcredittype.
       DATA(lv_len) = strlen( <fs_hareket>-transactiondetail1 ).
       IF lv_len = 10 OR lv_len = 11.

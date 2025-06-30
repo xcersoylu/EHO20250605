@@ -9,17 +9,20 @@
     DATA lt_glaccount_range TYPE RANGE OF hkont.
     DATA lv_error TYPE abap_boolean.
     DATA lt_error_messages TYPE yeho_tt_message.
+    DATA lv_lines TYPE int4.
+    DATA lv_text TYPE c LENGTH 200.
     LOOP AT it_parameters INTO DATA(ls_parameter).
       CASE ls_parameter-selname.
-        WHEN 'P_COMPANYCODE'.
+        WHEN 'P_CCODE'.
           DATA(lv_companycode) = CONV bukrs( ls_parameter-low ).
-        WHEN 'S_GLACCOUNT'.
+        WHEN 'S_GLACC'.
           APPEND INITIAL LINE TO lt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount_range>).
           <ls_glaccount_range> = CORRESPONDING #( ls_parameter ).
-        WHEN 'P_STARTDATE'.
+        WHEN 'P_STARTD'.
           lv_startdate = COND #( WHEN ls_parameter-low IS INITIAL THEN cl_abap_context_info=>get_system_date(  ) ELSE ls_parameter-low ).
-        WHEN 'P_ENDDATE'.
-          lv_enddate = COND #( WHEN ls_parameter-low IS INITIAL THEN cl_abap_context_info=>get_system_date(  ) ELSE ls_parameter-low ).
+        WHEN 'P_ENDD'.
+*          lv_enddate = COND #( WHEN ls_parameter-low IS INITIAL THEN cl_abap_context_info=>get_system_date(  ) ELSE ls_parameter-low ).
+          lv_enddate = COND #( WHEN ls_parameter-low IS INITIAL THEN lv_startdate ELSE ls_parameter-low ).
       ENDCASE.
     ENDLOOP.
     TRY.
@@ -40,7 +43,7 @@
                                                              number = '003' ).
           lo_log->add_item( lo_message ).
         ENDIF.
-        IF lv_startdate < cl_abap_context_info=>get_system_date(  ).
+        IF lv_startdate > cl_abap_context_info=>get_system_date(  ).
           lv_error = abap_true.
           lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
                                                              id = ycl_eho_utils=>mc_message_class
@@ -87,12 +90,27 @@
               ).
               IF lt_error_messages IS NOT INITIAL.
                 LOOP AT lt_error_messages INTO DATA(ls_error_messages).
+                  IF strlen( ls_error_messages-message ) > 200.
+                    lv_text = ls_error_messages-message(200).
+                  ELSE.
+                    lv_text = ls_error_messages-message.
+                  ENDIF.
                   DATA(lo_free) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_warning
-                                                                    text     = CONV #( ls_error_messages-message(200) ) ).
+                                                                    text     = lv_text ).
                   lo_log->add_item( lo_free ).
                 ENDLOOP.
               ELSE.
                 IF lt_bank_data IS NOT INITIAL OR lt_bank_balance IS NOT INITIAL.
+                  CLEAR lv_lines.
+                  lv_lines = lines( lt_bank_data ) .
+                  lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                                     id = ycl_eho_utils=>mc_message_class
+                                                                     number = '018'
+                                                                     variable_1 = CONV #( lv_lines )
+                                                                     variable_2 = CONV #( ls_bankpass-companycode )
+                                                                     variable_3 = CONV #( ls_bankpass-glaccount )
+                                                                     variable_4 = CONV #( lv_startdate ) ).
+                  lo_log->add_item( lo_message ).
                   APPEND LINES OF lt_bank_data TO lt_bank_data_all.
                   APPEND LINES OF lt_bank_balance TO lt_bank_balance_all.
                 ENDIF.

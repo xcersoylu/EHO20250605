@@ -42,8 +42,8 @@
               vade_bitis_tarihi            TYPE string,
               vade_sonu_beklenen_bakiye    TYPE string,
               vade_faiz_orani              TYPE string,
-              vade_sonu_odenecek_brut_faiz TYPE string, "alan uzunluğu 30 karakteri geçtiği için kısaltıldı vadesonuodenecekbrutfaiztutari
-              vade_sonu_odenecek_net_faiz  TYPE string, "alan uzunluğu 30 karakteri geçtiği için kısaltıldı vadesonuodeneceknetfaiztutari
+              vade_sonu_odenecek_brut_faiz TYPE string, "vadesonuodenecekbrutfaiztutari
+              vade_sonu_odenecek_net_faiz  TYPE string, "vadesonuodeneceknetfaiztutari
               hesap_no_iban                TYPE string,
             END OF ty_ekstrehesap,
             tt_ekstrehesap TYPE TABLE OF ty_ekstrehesap WITH EMPTY KEY,
@@ -81,13 +81,13 @@
     LOOP AT ls_hesap-hareketler ASSIGNING FIELD-SYMBOL(<fs_hareket>).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-glaccount   = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no = lv_sequence_no.
+      ls_offline_data-currency    = ms_bankpass-currency.
       IF <fs_hareket>-tutar < 0.
         SHIFT <fs_hareket>-tutar BY 1 PLACES LEFT.
       ENDIF.
-
       ls_offline_data-amount       = <fs_hareket>-tutar.
       ls_offline_data-description    = <fs_hareket>-aciklama.
       ls_offline_data-debit_credit = <fs_hareket>-borcalacak.

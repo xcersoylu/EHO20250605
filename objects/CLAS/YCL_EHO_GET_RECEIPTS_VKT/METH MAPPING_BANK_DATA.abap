@@ -73,13 +73,13 @@
     lv_opening_balance = get_account_balance(  ).
     LOOP AT ls_json_response-transactiondetailsresponse-transactiondetailsresult-value-transactiondetailresponsemodel INTO DATA(ls_detay).
       lv_sequence_no += 1.
-      ls_offline_data-companycode =  ms_bankpass-companycode.
-      ls_offline_data-glaccount   =  ms_bankpass-glaccount.
-      ls_offline_data-sequence_no =  lv_sequence_no.
+      ls_offline_data-companycode = ms_bankpass-companycode.
+      ls_offline_data-glaccount   = ms_bankpass-glaccount.
+      ls_offline_data-sequence_no = lv_sequence_no.
+      ls_offline_data-currency    = ms_bankpass-currency.
       ls_offline_data-description = ls_detay-comment.
       ls_offline_data-sender_bank = ls_detay-senderbankcode.
-      ls_offline_data-sender_branch  = ls_detay-senderbranchcode.
-
+      ls_offline_data-sender_branch = ls_detay-senderbranchcode.
       ls_offline_data-amount    = ls_detay-amount.
       IF ls_offline_data-amount > 0.
         ls_offline_data-payee_vkn = ls_detay-sendertaxnumber.
