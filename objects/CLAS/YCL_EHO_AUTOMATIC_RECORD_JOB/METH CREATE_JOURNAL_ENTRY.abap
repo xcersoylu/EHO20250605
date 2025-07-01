@@ -147,6 +147,7 @@
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
                                   ).
+          wait up to 1 seconds.
           MODIFY ENTITIES OF i_journalentrytp
            ENTITY journalentry
            EXECUTE post FROM lt_je
@@ -204,6 +205,5 @@
     ENDTRY.
     IF lt_saved_receipts[] IS NOT INITIAL.
       INSERT yeho_t_savedrcpt FROM TABLE @lt_saved_receipts.
-      COMMIT WORK AND WAIT.
     ENDIF.
   ENDMETHOD.
