@@ -91,12 +91,23 @@
     DATA lv_json TYPE string.
     DATA ls_offline_data TYPE yeho_t_offlinedt.
     DATA lv_sequence_no TYPE int4.
+    DATA lv_opening_balance TYPE yeho_e_opening_balance.
+    DATA lv_closing_balance TYPE yeho_e_closing_balance.
     lv_json = iv_json.
     REPLACE 'ns:getTransactionInfoResponse' IN lv_json WITH 'getTransactionInfoResponse'.
     /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
+    DATA(ls_accountinfos) = ls_json_response-gettransactioninforesponse-return-accountinforeturntype-accountinfos.
     LOOP AT ls_json_response-gettransactioninforesponse-return-accountinforeturntype-accountinfos-transactions INTO DATA(ls_transaction).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
+*açılış bakiyesi
+      IF lv_sequence_no = 1.
+        IF ls_transaction-debitorcreditcode = 'B'.
+          lv_opening_balance = ls_transaction-transactionbalance + ls_transaction-transactionamount.
+        ELSEIF ls_transaction-debitorcreditcode = 'A'.
+          lv_opening_balance = ls_transaction-transactionbalance - ls_transaction-transactionamount.
+        ENDIF.
+      ENDIF.
       ls_offline_data-companycode =  ms_bankpass-companycode.
       ls_offline_data-glaccount   =  ms_bankpass-glaccount.
       ls_offline_data-sequence_no =  lv_sequence_no.
@@ -149,20 +160,27 @@
       ENDIF.
       APPEND ls_offline_data TO et_bank_data.
     ENDLOOP.
-    IF sy-subrc = 0. "hareket varsa kayıt atılsın
-      DATA(ls_accountinfos) = ls_json_response-gettransactioninforesponse-return-accountinforeturntype-accountinfos.
-      APPEND VALUE #( companycode             = ms_bankpass-companycode
-                      glaccount               = ms_bankpass-glaccount
-                      valid_from              = mv_startdate
-                      account_no              = ls_accountinfos-accountno
-                      branch_no               = ls_accountinfos-branchcode
-                      branch_name_description = ls_accountinfos-branchname
-                      currency                = ls_accountinfos-accountcurrencycode
-                      opening_balance         =  ls_accountinfos-openingbalance
-                      closing_balance         =  ls_accountinfos-accountbalance
-                      bank_id                 =  ''
-                      account_id              = ''
-                      bank_code               =   ms_bankpass-bank_code
-      ) TO  et_bank_balance.
+    IF sy-subrc = 0.
+      lv_closing_balance = ls_accountinfos-accountbalance.
+    ELSE.
+      lv_opening_balance = lv_closing_balance = ls_accountinfos-accountbalance.
     ENDIF.
+    APPEND VALUE #( companycode             = ms_bankpass-companycode
+                    glaccount               = ms_bankpass-glaccount
+                    valid_from              = mv_startdate
+                    account_no = ms_bankpass-bankaccount
+                    branch_no = ms_bankpass-branch_code
+                    branch_name_description = ycl_eho_utils=>get_branch_name(
+                                              iv_companycode = ms_bankpass-companycode
+                                              iv_bank_code   = ms_bankpass-bank_code
+                                              iv_branch_code = ms_bankpass-branch_code
+                                            )
+                    currency = ms_bankpass-currency
+                    opening_balance         =  lv_opening_balance
+                    closing_balance         =  lv_closing_balance
+                    bank_id                 =  ''
+                    account_id              = ''
+                    bank_code               =   ms_bankpass-bank_code
+    ) TO  et_bank_balance.
+
   ENDMETHOD.
