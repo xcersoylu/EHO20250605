@@ -264,7 +264,7 @@
           ct_items = ms_response-items
       ).
     ENDIF.
-    SORT ms_response-items BY physical_operation_date ASCENDING time ASCENDING.
+    SORT ms_response-items BY physical_operation_date ASCENDING time ASCENDING sequence_no ASCENDING.
     DATA(lv_response_body) = /ui2/cl_json=>serialize( EXPORTING data = ms_response ).
     response->set_text( lv_response_body ).
     response->set_header_field( i_name = mc_header_content i_value = mc_content_type ).

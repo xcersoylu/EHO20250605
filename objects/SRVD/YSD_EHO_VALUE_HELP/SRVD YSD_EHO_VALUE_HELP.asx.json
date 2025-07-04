@@ -7,9 +7,9 @@
     "SRVDNAME":"YSD_EHO_VALUE_HELP",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2025-05-26",
-    "CHANGED_AT":"07:24:18",
-    "DT_UUID":"FA163EBBCF7E1FE08EC04DDD9678E4B6",
+    "CHANGED_ON":"2025-07-03",
+    "CHANGED_AT":"14:17:21",
+    "DT_UUID":"FA163EBBCF7E1FE096830DCD80A76519",
     "SOURCE_ORIGIN":"0",
     "SRVD_SOURCE_TYPE":"S",
     "ABAP_LANGUAGE_VERSION":"5"
@@ -35,7 +35,7 @@
    {
     "SRVDNAME":"YSD_EHO_VALUE_HELP",
     "VERSION":"A",
-    "SOURCE":"@EndUserText.label: 'Arama Yardımı'\r\ndefine service YSD_EHO_VALUE_HELP {\r\n  expose YVH_EHO_COMPANYCODE            as CompanyCode;\r\n  expose YVH_EHO_GLACCOUNT              as GLAccount;\r\n  expose YVH_EHO_RECORD_TYPE            as RecordType;\r\n  expose I_ReversalReasonValueHelp      as ReversalReason;\r\n  expose I_Customer_VH                  as Customer;\r\n  expose I_Supplier_VH                  as Supplier;\r\n  expose YVH_EHO_ACCOUNTINGDOCUMENTTYPE as AccountingDocumentType;\r\n  expose YVH_EHO_COSTCENTER             as CostCenter;\r\n  expose YVH_EHO_specialglcode          as SpecialGLCode;\r\n  expose YVH_EHO_paymentmethod          as PaymentMethod;\r\n}"
+    "SOURCE":"@EndUserText.label: 'Arama Yardımı'\r\ndefine service YSD_EHO_VALUE_HELP {\r\n  expose YVH_EHO_COMPANYCODE            as CompanyCode;\r\n  expose YVH_EHO_GLACCOUNT              as GLAccount;\r\n  expose YVH_EHO_RECORD_TYPE            as RecordType;\r\n  expose I_ReversalReasonValueHelp      as ReversalReason;\r\n  expose I_Customer_VH                  as Customer;\r\n  expose I_Supplier_VH                  as Supplier;\r\n  expose YVH_EHO_ACCOUNTINGDOCUMENTTYPE as AccountingDocumentType;\r\n  expose YVH_EHO_COSTCENTER             as CostCenter;\r\n  expose YVH_EHO_specialglcode          as SpecialGLCode;\r\n  expose YVH_EHO_paymentmethod          as PaymentMethod;\r\n  expose YVH_EHO_ACCOUNT                as Account;\r\n}"
    }
   ]
  },
@@ -91,6 +91,15 @@
     "EXPOSED_ARTIFACT_TYPE":"E",
     "EXPOSED_ALIAS":"SUPPLIER",
     "EXPOSED_ALIAS_RAW":"Supplier",
+    "INCL_SERVICE":""
+   },
+   {
+    "SRVDNAME":"YSD_EHO_VALUE_HELP",
+    "SERVICE":"YSD_EHO_VALUE_HELP",
+    "EXPOSED_ARTIFACT":"YVH_EHO_ACCOUNT",
+    "EXPOSED_ARTIFACT_TYPE":"E",
+    "EXPOSED_ALIAS":"ACCOUNT",
+    "EXPOSED_ALIAS_RAW":"Account",
     "INCL_SERVICE":""
    },
    {
@@ -167,8 +176,8 @@
     "SERVICE":"YSD_EHO_VALUE_HELP",
     "SERVICE_RAW":"YSD_EHO_VALUE_HELP",
     "SOURCE_TYPE":"S",
-    "DT_UUID":"FA163EBBCF7E1FE08EC04DDD9678E4B6",
-    "RT_HASH":"A6E09F6042E8A4FA6789FA2FD09646E4E07EAD1D",
+    "DT_UUID":"FA163EBBCF7E1FE096830DCD80A76519",
+    "RT_HASH":"84F9492D092DA6DAE3F1074F452E15BD673EA808",
     "GEN_VERSION":"0"
    }
   ]

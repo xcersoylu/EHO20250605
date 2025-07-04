@@ -22,8 +22,9 @@
               valor               TYPE string,
               uzunaciklama        TYPE string,
             END OF ty_hareket,
+            tt_hareket type table of ty_hareket WITH EMPTY KEY,
             BEGIN OF ty_hareketler,
-              hareket TYPE ty_hareket,
+              hareket TYPE tt_hareket, "ty_hareket,
             END OF ty_hareketler,
             tt_hareketler TYPE TABLE OF ty_hareketler WITH EMPTY KEY,
             BEGIN OF ty_hesap,
@@ -33,13 +34,13 @@
               kapanisbakiyesi TYPE string,
               subeadi         TYPE string,
               subekodu        TYPE string,
-              hareketler      TYPE tt_hareketler,
+              hareketler      TYPE ty_hareketler, "tt_hareketler,
             END OF ty_hesap,
             BEGIN OF ty_hesaplar,
               hesap TYPE ty_hesap,
             END OF ty_hesaplar,
             tt_hesaplar TYPE TABLE OF ty_hesaplar WITH EMPTY KEY,
-            BEGIN OF ty_json,
+            BEGIN OF ty_return,
               id                 TYPE string,
               bankaadi           TYPE string,
               bankakodu          TYPE string,
@@ -47,45 +48,54 @@
               bankaverginumarasi TYPE string,
               hataaciklamasi     TYPE string,
               hatakodu           TYPE string,
-              hesaplar           TYPE tt_hesaplar,
-            END OF ty_json.
+              hesaplar           TYPE ty_hesaplar, "tt_hesaplar,
+            END OF ty_return,
+            BEGIN OF ty_response,
+                return type ty_Return,
+            END OF ty_response,
+            BEGIN OF ty_json,
+             response type ty_response,
+            end of ty_json.
     DATA ls_json_response TYPE ty_json.
     DATA lv_sequence_no TYPE int4.
     DATA ls_offline_data TYPE yeho_t_offlinedt.
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
-    /ui2/cl_json=>deserialize( EXPORTING json = iv_json CHANGING data = ls_json_response ).
+    DATA lv_json type string.
+    lv_json = iv_json.
+    REPLACE 'ns1:sorgulaResponse' in lv_json WITH 'response'.
+    /ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_json_response ).
     DATA(lv_today) = cl_abap_context_info=>get_system_date( ).
-    READ TABLE ls_json_response-hesaplar INTO DATA(ls_hesaplar) WITH KEY hesap-hesapno = ms_bankpass-bankaccount.
-    LOOP AT ls_hesaplar-hesap-hareketler INTO DATA(ls_hareketler).
-      ls_offline_data-sequence_no = ls_hareketler-hareket-sirano.
+*    READ TABLE ls_json_response-response-return-hesaplar-hesap-hareketler INTO DATA(ls_hesaplar) WITH KEY hesap-hesapno = ms_bankpass-bankaccount.
+    LOOP AT ls_json_response-response-return-hesaplar-hesap-hareketler-hareket INTO DATA(ls_hareketler).
+      ls_offline_data-sequence_no = ls_hareketler-sirano.
       ls_offline_data-glaccount   = ms_bankpass-glaccount.
       ls_offline_data-companycode = ms_bankpass-companycode.
       ls_offline_data-currency    = ms_bankpass-currency.
-      ls_offline_data-amount      = ls_hareketler-hareket-tutar.
-      ls_offline_data-operationalglaccount = ls_hesaplar-hesap-hesapno.
-      IF ls_hareketler-hareket-uzunaciklama IS INITIAL.
-        ls_offline_data-description = ls_hareketler-hareket-aciklama.
+      ls_offline_data-amount      = ls_hareketler-tutar.
+      ls_offline_data-operationalglaccount = ls_json_response-response-return-hesaplar-hesap-hesapno.
+      IF ls_hareketler-uzunaciklama IS INITIAL.
+        ls_offline_data-description = ls_hareketler-aciklama.
       ELSE.
-        ls_offline_data-description = ls_hareketler-hareket-uzunaciklama.
+        ls_offline_data-description = ls_hareketler-uzunaciklama.
       ENDIF.
-      ls_offline_data-debit_credit    = ls_hareketler-hareket-borcalacak.
-      ls_offline_data-payee_vkn       = ls_hareketler-hareket-borcluvkn.
-      ls_offline_data-debtor_vkn      = ls_hareketler-hareket-alacaklivkn.
-      ls_offline_data-current_balance = ls_hareketler-hareket-anlikbakiye.
-      ls_offline_data-receipt_no      = ls_hareketler-hareket-dekontno.
-      ls_offline_data-sender_iban     = ls_hareketler-hareket-gonderenibanno.
-      ls_offline_data-sender_branch   = ls_hareketler-hareket-gonderensube.
-      ls_offline_data-sender_bank     = ls_hareketler-hareket-gonderenbanka.
-      ls_offline_data-sender_name     = ls_hareketler-hareket-gonderenad.
-      ls_offline_data-counter_account_no  = ls_hareketler-hareket-karsihesapvno.
-      ls_offline_data-time            = ls_hareketler-hareket-saat(6).
-      ls_offline_data-transaction_type = ls_hareketler-hareket-islemtipi.
+      ls_offline_data-debit_credit    = ls_hareketler-borcalacak.
+      ls_offline_data-payee_vkn       = ls_hareketler-borcluvkn.
+      ls_offline_data-debtor_vkn      = ls_hareketler-alacaklivkn.
+      ls_offline_data-current_balance = ls_hareketler-anlikbakiye.
+      ls_offline_data-receipt_no      = ls_hareketler-dekontno.
+      ls_offline_data-sender_iban     = ls_hareketler-gonderenibanno.
+      ls_offline_data-sender_branch   = ls_hareketler-gonderensube.
+      ls_offline_data-sender_bank     = ls_hareketler-gonderenbanka.
+      ls_offline_data-sender_name     = ls_hareketler-gonderenad.
+      ls_offline_data-counter_account_no  = ls_hareketler-karsihesapvno.
+      ls_offline_data-time            = ls_hareketler-saat(6).
+      ls_offline_data-transaction_type = ls_hareketler-islemtipi.
       CONCATENATE lv_today(2)
-                  ls_hareketler-hareket-muhasebetarihi
+                  ls_hareketler-muhasebetarihi
                   INTO ls_offline_data-accounting_date.
       CONCATENATE lv_today(2)
-                  ls_hareketler-hareket-valor
+                  ls_hareketler-valor
                   INTO ls_offline_data-valor.
       ls_offline_data-physical_operation_date = ls_offline_data-accounting_date.
 ***      IF ls_list-last_updated_date_time LT ls_hareket-fiziksel_islem_tarihi.
@@ -94,22 +104,22 @@
       APPEND ls_offline_data TO et_bank_data.
       CLEAR ls_offline_data.
     ENDLOOP.
-    IF sy-subrc = 0.
-      DATA(lt_bank_data) = et_bank_data.
-      SORT lt_bank_data BY sequence_no ASCENDING.
-      READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
-      IF ls_bank_data-debit_credit = 'B'.
-        lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
-      ELSE.
-        lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
-      ENDIF.
-      SORT lt_bank_data BY sequence_no ASCENDING.
-      READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
-      lv_closing_balance = ls_bank_data-current_balance.
-    ELSE.
-      lv_opening_balance  = ls_hesaplar-hesap-acilisbakiyesi.
-      lv_closing_balance = ls_hesaplar-hesap-kapanisbakiyesi.
-    ENDIF.
+*    IF sy-subrc = 0.
+*      DATA(lt_bank_data) = et_bank_data.
+*      SORT lt_bank_data BY sequence_no ASCENDING.
+*      READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
+*      IF ls_bank_data-debit_credit = 'B'.
+*        lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
+*      ELSE.
+*        lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
+*      ENDIF.
+*      SORT lt_bank_data BY sequence_no ASCENDING.
+*      READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
+*      lv_closing_balance = ls_bank_data-current_balance.
+*    ELSE.
+      lv_opening_balance  = ls_json_response-response-return-hesaplar-hesap-acilisbakiyesi.
+      lv_closing_balance = ls_json_response-response-return-hesaplar-hesap-kapanisbakiyesi.
+*    ENDIF.
 
     APPEND VALUE #( companycode = ms_bankpass-companycode
                     glaccount   = ms_bankpass-glaccount

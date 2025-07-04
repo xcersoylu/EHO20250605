@@ -30,11 +30,13 @@
             BEGIN OF ty_hareketler,
               hareketwithtoken TYPE tt_hareketwthtoken,
             END OF ty_hareketler,
+            tt_hareketler TYPE TABLE OF ty_hareketler WITH DEFAULT KEY,
             BEGIN OF ty_hesapbilgileri,
               ad                TYPE string,
               bakiye            TYPE string,
               devamivarmi       TYPE string,
               gunacilisbakiye   TYPE string,
+              guncelbakiye      TYPE string,
               hareketler        TYPE ty_hareketler,
               hesapacilistarihi TYPE string,
               musterino         TYPE string,
@@ -46,15 +48,15 @@
               tur               TYPE string,
               vkntckn           TYPE string,
             END OF ty_hesapbilgileri,
-            tt_hesapbilgileri type table of ty_hesapbilgileri WITH EMPTY KEY,
+            tt_hesapbilgileri TYPE TABLE OF ty_hesapbilgileri WITH EMPTY KEY,
             BEGIN OF ty_returnmessage,
               returnmesaj TYPE string,
               returnsonuc TYPE string,
             END OF ty_returnmessage,
             BEGIN OF ty_hesapbilgileriwithtoken,
-            hesapbilgileriwithtoken type ty_hesapbilgileri,
-            END OF TY_HESAPBILGILERIWITHTOKEN,
-            tt_hesapbilgileriwithtoken type table of ty_hesapbilgileriwithtoken with EMPTY KEY,
+              hesapbilgileriwithtoken TYPE ty_hesapbilgileri,
+            END OF ty_hesapbilgileriwithtoken,
+            tt_hesapbilgileriwithtoken TYPE TABLE OF ty_hesapbilgileriwithtoken WITH EMPTY KEY,
             BEGIN OF ty_result,
               hesapbilgileri TYPE ty_hesapbilgileriwithtoken,
               tokeninfo      TYPE string,
@@ -83,6 +85,7 @@
       APPEND VALUE #( messagetype = mc_error message = ls_json_response-tokenresponse-tokenresult-result-returnmesaj ) TO et_error_messages.
       RETURN.
     ENDIF.
+
     LOOP AT ls_json_response-tokenresponse-tokenresult-hesapbilgileri-hesapbilgileriwithtoken-hareketler-hareketwithtoken ASSIGNING FIELD-SYMBOL(<fs_hareket>).
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
@@ -106,7 +109,7 @@
              INTO ls_offline_data-physical_operation_date.
       CONCATENATE <fs_hareket>-islemsaati+0(2)
                   <fs_hareket>-islemsaati+3(2)
-                  <fs_hareket>-islemsaati+5(2)
+                  <fs_hareket>-islemsaati+6(2)
              INTO ls_offline_data-time.
       CONCATENATE <fs_hareket>-valor+6(2)
                   <fs_hareket>-valor+3(2)
@@ -119,18 +122,29 @@
     ENDLOOP.
     IF sy-subrc = 0.
       DATA(lt_bank_data) = et_bank_data.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY sequence_no ASCENDING.
       READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
       IF ls_bank_data-debit_credit = 'B'.
         lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
       ELSE.
         lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
       ENDIF.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+      SORT lt_bank_data BY sequence_no DESCENDING.
       READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
       lv_closing_balance = ls_bank_data-current_balance.
+*      DATA(lt_bank_data) = et_bank_data.
+*      SORT lt_bank_data BY physical_operation_date time sequence_no ASCENDING.
+*      READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
+*      IF ls_bank_data-debit_credit = 'B'.
+*        lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
+*      ELSE.
+*        lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
+*      ENDIF.
+*      SORT lt_bank_data BY physical_operation_date time sequence_no DESCENDING.
+*      READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
+*      lv_closing_balance = ls_bank_data-current_balance.
     ELSE.
-      lv_opening_balance  = lv_closing_balance = ls_json_response-tokenresponse-tokenresult-hesapbilgileri-hesapbilgileriwithtoken-gunacilisbakiye.
+      lv_opening_balance  = lv_closing_balance = ls_json_response-tokenresponse-tokenresult-hesapbilgileri-hesapbilgileriwithtoken-guncelbakiye.
     ENDIF.
 
     APPEND VALUE #( companycode = ms_bankpass-companycode
