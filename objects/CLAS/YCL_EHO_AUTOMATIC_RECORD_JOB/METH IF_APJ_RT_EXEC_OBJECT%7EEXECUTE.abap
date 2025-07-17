@@ -7,7 +7,10 @@
           APPEND INITIAL LINE TO mt_glaccount_range ASSIGNING FIELD-SYMBOL(<ls_glaccount_range>).
           <ls_glaccount_range> = CORRESPONDING #( ls_parameter ).
         WHEN 'P_DATE'.
-          mv_date = conv d( ls_parameter-low ).
+          mv_date = CONV d( ls_parameter-low ).
+          IF mv_date IS INITIAL.
+            mv_date = cl_abap_context_info=>get_system_date(  ).
+          ENDIF.
       ENDCASE.
     ENDLOOP.
 

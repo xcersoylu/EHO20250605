@@ -40,6 +40,9 @@
       WHERE companycode = @ms_request-companycode
         AND glaccount IN @ms_request-glaccount
       INTO CORRESPONDING FIELDS OF TABLE @lt_header.
+** SAP bakiyesi
+
+**
     SELECT bankdata~companycode,
            bankdata~glaccount,
            bankdata~valid_from,

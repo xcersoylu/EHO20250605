@@ -82,7 +82,7 @@
                           reference2idbybusinesspartner = <ls_item>-rule_data-reference2idbybusinesspartner
                           reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
                           costcenter                    = <ls_item>-rule_data-costcenter
-*                          documentitemtext              = <ls_item>-rule_data-documentitemtext102
+                          documentitemtext              = <ls_item>-rule_data-documentitemtext_1
                           _currencyamount = VALUE #( ( currencyrole = '00'
                                                       journalentryitemamount = <ls_item>-amount
                                                       currency = <ls_item>-currency  ) )          ) TO lt_glitem.
@@ -98,7 +98,7 @@
                             reference1idbybusinesspartner = <ls_item>-rule_data-reference1idbybusinesspartner
                             reference2idbybusinesspartner = <ls_item>-rule_data-reference2idbybusinesspartner
                             reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
-                            documentitemtext              = <ls_item>-rule_data-documentitemtext
+                            documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                             specialglcode                 = <ls_item>-rule_data-specialglcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                        journalentryitemamount = -1 * <ls_item>-amount
@@ -115,7 +115,7 @@
                              reference1idbybusinesspartner = <ls_item>-rule_data-reference1idbybusinesspartner
                              reference2idbybusinesspartner = <ls_item>-rule_data-reference2idbybusinesspartner
                              reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
-                             documentitemtext              = <ls_item>-rule_data-documentitemtext
+                             documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                              specialglcode                 = <ls_item>-rule_data-specialglcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                         journalentryitemamount = -1 * <ls_item>-amount
@@ -129,7 +129,7 @@
                             reference3idbybusinesspartner = <ls_item>-rule_data-reference3idbybusinesspartner
                             costcenter                    = <ls_item>-rule_data-costcenter
                             orderid                       = <ls_item>-rule_data-orderid
-                            documentitemtext              = <ls_item>-rule_data-documentitemtext
+                            documentitemtext              = <ls_item>-rule_data-documentitemtext_2
                             specialglcode                 = <ls_item>-rule_data-specialglcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
                                                         journalentryitemamount = -1 * <ls_item>-amount
@@ -147,7 +147,7 @@
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
                                   ).
-          wait up to 1 seconds.
+          WAIT UP TO 1 SECONDS.
           MODIFY ENTITIES OF i_journalentrytp
            ENTITY journalentry
            EXECUTE post FROM lt_je

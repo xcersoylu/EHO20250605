@@ -46,6 +46,12 @@
    {
     "SPRAS":"E",
     "OBJECT":"YEHO_APP_LOG",
+    "SUBOBJECT":"YEHO_AUTOMATIC",
+    "SUBOBJTXT":"Automatic Save Log"
+   },
+   {
+    "SPRAS":"E",
+    "OBJECT":"YEHO_APP_LOG",
     "SUBOBJECT":"YEHO_BANK_API",
     "SUBOBJTXT":"Bank API Log"
    },
