@@ -84,8 +84,8 @@
       ls_offline_data-additional_field2       = ls_detay-referencenumber.
       ls_offline_data-current_balance         = ls_detay-currentbalance.
       ls_offline_data-receipt_no              = ls_detay-transactionno.
-      ls_offline_data-physical_operation_date = ls_detay-accountingdate.
-      ls_offline_data-valor                   = ls_detay-accountingdate.
+      ls_offline_data-physical_operation_date = ls_detay-transactiondate.
+      ls_offline_data-valor                   = ls_detay-transactiondate.
       ls_offline_data-accounting_date         = ls_detay-transactiondate.
       ls_offline_data-time                    = ls_detay-transactiontime.
       ls_offline_data-transaction_type        = ls_detay-mt940.
