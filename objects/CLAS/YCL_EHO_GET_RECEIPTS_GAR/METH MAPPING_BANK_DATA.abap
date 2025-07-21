@@ -86,7 +86,11 @@
     ASSIGN <return_code>->* TO <fs_val>.
     ls_json_response-result-return_code = COND #( WHEN <fs_val> IS ASSIGNED THEN <fs_val> ).
     UNASSIGN <fs_val>.
-    CHECK ls_json_response-result-return_code EQ 200.
+*    CHECK ls_json_response-result-return_code EQ 200.
+    IF ls_json_response-result-return_code <> 200.
+      APPEND VALUE #( messagetype = mc_error message = ls_json_response-result-message_text ) TO et_error_messages.
+      RETURN.
+    ENDIF.
     """""""""""""""""""""""""""""""""""""""""""""""""
     ASSIGN COMPONENT 'TRANSACTIONS' OF STRUCTURE <data> TO FIELD-SYMBOL(<transactions>).
     CHECK <transactions> IS ASSIGNED.
@@ -280,11 +284,6 @@
     ENDLOOP.
 
     """"""""""""""""""""""""""""""""""""""""""""""""""
-    IF ls_json_response-result-return_code <> '200'.
-      APPEND VALUE #( messagetype = mc_error message = ls_json_response-result-message_text ) TO et_error_messages.
-      RETURN.
-    ENDIF.
-
     DATA(lv_line) = lines( ls_json_response-transaction ).
     APPEND VALUE #( companycode = ms_bankpass-companycode
                     glaccount = ms_bankpass-glaccount
