@@ -29,11 +29,16 @@
               sonharekettarihi  TYPE string,
               bakiye            TYPE string,
               aktiviteler       TYPE ty_aktiviteler,
+              bloketuttari      TYPE string,
+              acilisbakiyesi    TYPE string,
             END OF ty_hesap,
-            BEGIN OF ty_json,
+            BEGIN OF ty_hareketler,
               hatakodu     TYPE string,
               hataaciklama TYPE string,
               hesap        TYPE ty_hesap,
+            END OF ty_hareketler,
+            BEGIN OF ty_json,
+              hareketler TYPE ty_hareketler,
             END OF ty_json.
     DATA ls_json_response   TYPE ty_json.
     DATA lv_sequence_no     TYPE int4.
@@ -41,8 +46,13 @@
     DATA lv_opening_balance TYPE yeho_e_opening_balance.
     DATA lv_closing_balance TYPE yeho_e_closing_balance.
     /ui2/cl_json=>deserialize( EXPORTING json = iv_json CHANGING data = ls_json_response ).
-
-    LOOP AT ls_json_response-hesap-aktiviteler-hareket ASSIGNING FIELD-SYMBOL(<fs_hareket>) WHERE tarih IS NOT INITIAL.
+    if ls_json_response-hareketler-hatakodu <> '0'.
+      APPEND VALUE #( messagetype = mc_error message = ls_json_response-hareketler-hataaciklama ) TO et_error_messages.
+      RETURN.
+    endif.
+    lv_opening_balance = ls_json_response-hareketler-hesap-acilisbakiyesi.
+    SORT ls_json_response-hareketler-hesap-aktiviteler-hareket BY refno ASCENDING. "hareketler sırası ile gelmiyordu refno ya göre sortlandı.
+    LOOP AT ls_json_response-hareketler-hesap-aktiviteler-hareket ASSIGNING FIELD-SYMBOL(<fs_hareket>) WHERE tarih IS NOT INITIAL.
       CLEAR ls_offline_data.
       lv_sequence_no += 1.
       ls_offline_data-companycode = ms_bankpass-companycode.
@@ -52,6 +62,7 @@
       CONCATENATE <fs_hareket>-aciklama1
                   <fs_hareket>-aciklama2
                   INTO ls_offline_data-description SEPARATED BY space.
+      REPLACE ALL OCCURRENCES OF ',' IN <fs_hareket>-tutar WITH '.'.
       IF <fs_hareket>-tutar > 0.
         ls_offline_data-debit_credit = 'A'.
         ls_offline_data-debtor_vkn = <fs_hareket>-vkn.
@@ -62,6 +73,7 @@
         SHIFT <fs_hareket>-tutar BY 1 PLACES LEFT.
       ENDIF.
       ls_offline_data-amount           = <fs_hareket>-tutar.
+      REPLACE ALL OCCURRENCES OF ',' IN <fs_hareket>-islemsonubakiye WITH '.'.
       ls_offline_data-current_balance  = <fs_hareket>-islemsonubakiye.
       ls_offline_data-receipt_no       = <fs_hareket>-refno.
       ls_offline_data-sender_iban      = <fs_hareket>-iban.
@@ -84,19 +96,19 @@
       APPEND ls_offline_data TO et_bank_data.
     ENDLOOP.
     IF sy-subrc = 0.
-      DATA(lt_bank_data) = et_bank_data.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
-      READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
-      IF ls_bank_data-debit_credit = 'B'.
-        lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
-      ELSE.
-        lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
-      ENDIF.
-      SORT lt_bank_data BY physical_operation_date time ASCENDING.
-      READ TABLE lt_bank_data INTO ls_bank_data INDEX 1.
-      lv_closing_balance = ls_bank_data-current_balance.
+*      DATA(lt_bank_data) = et_bank_data.
+*      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+*      READ TABLE lt_bank_data INTO DATA(ls_bank_data) INDEX 1.
+*      IF ls_bank_data-debit_credit = 'B'.
+*        lv_opening_balance = ls_bank_data-current_balance + ls_bank_data-amount.
+*      ELSE.
+*        lv_opening_balance = ls_bank_data-current_balance - ls_bank_data-amount.
+*      ENDIF.
+*      SORT lt_bank_data BY physical_operation_date time ASCENDING.
+*      READ TABLE lt_bank_data INTO data(ls_bank_data) INDEX 1.
+      lv_closing_balance = ls_offline_data-current_balance.
     ELSE.
-      lv_opening_balance  = lv_closing_balance = ls_json_response-hesap-bakiye.
+      lv_closing_balance = lv_opening_balance.
     ENDIF.
 
     APPEND VALUE #( companycode = ms_bankpass-companycode
