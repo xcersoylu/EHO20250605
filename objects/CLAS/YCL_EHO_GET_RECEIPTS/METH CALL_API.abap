@@ -12,7 +12,8 @@
         ).
 
         lo_web_http_request->set_header_fields( VALUE #( (  name = 'Accept' value = 'application/json' )
-                                                         (  name = 'Content-Type' value = 'application/json' ) ) ).
+                                                         (  name = 'Content-Type' value = 'application/json' )
+                                                         (  name = 'CompanyCode' value = |{ ms_bankpass-class_suffix }{ ms_bankpass-companycode }| ) ) ).
         lo_web_http_request->set_text(
           EXPORTING
             i_text   = lv_json
