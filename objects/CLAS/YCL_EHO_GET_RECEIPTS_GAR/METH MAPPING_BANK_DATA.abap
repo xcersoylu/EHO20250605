@@ -333,8 +333,8 @@
         ls_offline_data-amount = ls_offline_data-amount * -1.
       ENDIF.
       ls_offline_data-current_balance = ls_transaction-balance_after_transaction.
-      ls_offline_data-sender_iban = ls_transaction-corr_iban. "lv_corriban.
-      ls_offline_data-sender_branch = ls_transaction-corr_unit_num. "lv_corrunitnum.
+      ls_offline_data-sender_iban = ls_transaction-corr_iban.
+      ls_offline_data-sender_branch = ls_transaction-corr_unit_num.
       APPEND ls_offline_data TO et_bank_data.
     ENDLOOP.
   ENDMETHOD.

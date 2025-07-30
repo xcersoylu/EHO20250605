@@ -25,6 +25,7 @@
                 'T'
                 '23:59:59.999'
                 INTO lv_end_date.
+
     ls_json = VALUE #( consent_id     = ms_bankpass-service_password
                        unit_num       = ms_bankpass-branch_code
                        account_num    = ms_bankpass-bankaccount
@@ -33,7 +34,7 @@
                        end_date       = lv_end_date
                        transaction_id = ''
                        page_index     = 1
-                       page_size      = 500 ).
+                       page_size      = COND #( WHEN ms_bankpass-additional_field1 IS INITIAL THEN 1000 ELSE ms_bankpass-additional_field1 ) ).
     rv_json = /ui2/cl_json=>serialize( EXPORTING data = ls_json pretty_name = 'X' ).
     REPLACE 'iban' IN rv_json WITH 'IBAN'.
   ENDMETHOD.
