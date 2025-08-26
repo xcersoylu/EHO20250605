@@ -33,7 +33,7 @@
     "REFRESH_INTERVALL":0,
     "DISPLAY_NUMBER_UNIT":"",
     "FLAVOR_ID":"",
-    "CHANGED_AT":"+020250801113919",
+    "CHANGED_AT":"+020250822154725",
     "CHANGED_BY":"SAP_CUSTOMER",
     "MASTERLANG":"",
     "ACH_COMPONENT":"",
@@ -99,7 +99,8 @@
     "TILE_SUBTITLE":"",
     "TILE_KEYWORDS":"",
     "TILE_INFORMATION":"",
-    "ALT_SMART_LINK_TITLE":"Banka Kaydı"
+    "ALT_SMART_LINK_TITLE":"Banka Kaydı",
+    "DESCRIPTION":"Elektronik Hesap Özeti"
    }
   ]
  },
@@ -127,8 +128,8 @@
     "CRELEASE":"",
     "DELFLAG":"",
     "TRANSLTTXT":"",
-    "CREATED_ON":"2025-08-01",
-    "CHECK_DATE":"2025-08-01",
+    "CREATED_ON":"2025-08-22",
+    "CHECK_DATE":"2025-08-22",
     "CHECK_CFG":""
    }
   ]

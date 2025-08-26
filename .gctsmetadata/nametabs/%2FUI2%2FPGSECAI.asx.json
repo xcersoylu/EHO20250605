@@ -25,6 +25,13 @@
     "DECIMALS":-1
    },
    {
+    "NAME":"VERSION",
+    "KEY":"X",
+    "TYPE":"C",
+    "LENGTH":1,
+    "DECIMALS":-1
+   },
+   {
     "NAME":"TYPE",
     "KEY":"",
     "TYPE":"C",

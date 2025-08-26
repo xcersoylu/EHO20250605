@@ -51,6 +51,13 @@
     "TYPE":"C",
     "LENGTH":255,
     "DECIMALS":-1
+   },
+   {
+    "NAME":"DESCRIPTION",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":255,
+    "DECIMALS":-1
    }
   ],
   "properties":

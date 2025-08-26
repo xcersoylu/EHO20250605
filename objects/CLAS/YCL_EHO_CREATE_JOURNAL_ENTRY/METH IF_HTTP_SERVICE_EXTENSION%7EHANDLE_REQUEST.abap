@@ -4,6 +4,8 @@
               currencyrole           TYPE string,
               journalentryitemamount TYPE yeho_e_wrbtr,
               currency               TYPE waers,
+              taxamount              TYPE yeho_e_wrbtr,
+              taxbaseamount          TYPE yeho_e_wrbtr,
             END OF ty_currencyamount.
     TYPES tt_currencyamount TYPE TABLE OF ty_currencyamount WITH EMPTY KEY.
     TYPES : BEGIN OF ty_glitem,
@@ -17,6 +19,7 @@
               orderid                       TYPE aufnr,
               documentitemtext              TYPE sgtxt,
               specialglcode                 TYPE yeho_e_umskz,
+              taxcode                       TYPE mwskz,
               _currencyamount               TYPE tt_currencyamount,
             END OF ty_glitem,
             BEGIN OF ty_aritems, "kunnr
@@ -50,33 +53,69 @@
               documentitemtext              TYPE sgtxt,
               specialglcode                 TYPE yeho_e_umskz,
               _currencyamount               TYPE tt_currencyamount,
-            END OF ty_apitems.
+            END OF ty_apitems,
+            BEGIN OF ty_taxitems,
+              glaccountlineitem     TYPE string,
+              taxcode               TYPE mwskz,
+              taxitemclassification TYPE ktosl,
+              conditiontype         TYPE kschl,
+              taxcountry            TYPE fot_tax_country,
+              taxrate               TYPE yeho_e_tax_ratio,
+              _currencyamount       TYPE tt_currencyamount,
+            END OF ty_taxitems.
 
     DATA lt_je             TYPE TABLE FOR ACTION IMPORT i_journalentrytp~post.
     DATA lt_glitem         TYPE TABLE OF ty_glitem.
     DATA lt_apitem         TYPE TABLE OF ty_apitems.
     DATA lt_aritem         TYPE TABLE OF ty_aritems.
+    DATA lt_taxitem        TYPE TABLE OF ty_taxitems.
     DATA lt_saved_receipts TYPE TABLE OF yeho_t_savedrcpt.
-
+    DATA lv_taxamount      TYPE yeho_e_wrbtr.
+    DATA lv_taxbaseamount  TYPE yeho_e_wrbtr.
+    DATA lv_tax_ratio      TYPE yeho_e_tax_ratio.
 
     DATA(lv_request_body) = request->get_text( ).
     DATA(lv_get_method) = request->get_method( ).
 
     /ui2/cl_json=>deserialize( EXPORTING json = lv_request_body CHANGING data = ms_request ).
-*    DATA(lt_rule_data) = get_rule_data( it_items = ms_request-items ).
     LOOP AT ms_request-items ASSIGNING FIELD-SYMBOL(<ls_item>).
-*      READ TABLE lt_rule_data INTO DATA(ls_rule_data) WITH KEY companycode = <ls_item>-companycode
-*                                                               rule_no = <ls_item>-rule_no BINARY SEARCH.
       APPEND INITIAL LINE TO lt_je ASSIGNING FIELD-SYMBOL(<fs_je>).
       TRY.
           <fs_je>-%cid = to_upper( cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ) ).
+          IF <ls_item>-taxcode IS NOT INITIAL.
+            get_tax_ratio(
+              EXPORTING
+                iv_taxcode     = <ls_item>-taxcode
+                iv_companycode = <ls_item>-companycode
+              RECEIVING
+                rv_ratio       = lv_tax_ratio
+            ).
+            lv_taxamount = <ls_item>-amount - ( <ls_item>-amount / ( 1 + ( lv_tax_ratio / 100 ) ) ).
+*her zaman ekrandaki - olan satırlar için vergi göstergesi girilebilecekmiş o yüzden vergi göstergesi - bulunuyor bu yüzden mutlak değeri alınıyor.
+*örneğin 102 li hesaba -100
+* 760 lı hesaba 83,33
+* 191 li kdv hesaba 16,67 atılıyor.
+            lv_taxamount = abs( lv_taxamount ).
+            lv_taxbaseamount = <ls_item>-amount + lv_taxamount.
+            lv_taxbaseamount = abs( lv_taxbaseamount ).
+            APPEND VALUE #( glaccountlineitem     = |003|
+                            taxcode               = <ls_item>-taxcode
+                            taxitemclassification = 'VST'
+                            conditiontype         = 'MWVS'
+                            taxrate               = lv_tax_ratio
+                            _currencyamount = VALUE #( ( currencyrole = '00'
+                                                         journalentryitemamount = lv_taxamount
+                                                         currency = <ls_item>-currency
+                                                         taxamount = lv_taxamount
+                                                         taxbaseamount = lv_taxbaseamount ) ) ) TO lt_taxitem.
+          ENDIF.
           APPEND VALUE #( glaccountlineitem             = |001|
                           glaccount                     = <ls_item>-glaccount
                           assignmentreference           = <ls_item>-assignmentreference
                           reference1idbybusinesspartner = <ls_item>-reference1idbybusinesspartner
                           reference2idbybusinesspartner = <ls_item>-reference2idbybusinesspartner
                           reference3idbybusinesspartner = <ls_item>-reference3idbybusinesspartner
-                          costcenter                    = <ls_item>-costcenter
+*                          costcenter                    = <ls_item>-costcenter
                           documentitemtext              = <ls_item>-documentitemtext102
                           _currencyamount = VALUE #( ( currencyrole = '00'
                                                       journalentryitemamount = <ls_item>-amount
@@ -126,8 +165,11 @@
                             orderid                       = <ls_item>-orderid
                             documentitemtext              = <ls_item>-documentitemtext
                             specialglcode                 = <ls_item>-specialglcode
+                            taxcode                       = <ls_item>-taxcode
                             _currencyamount = VALUE #( ( currencyrole = '00'
-                                                        journalentryitemamount = -1 * <ls_item>-amount
+                                                        journalentryitemamount = COND #( WHEN <ls_item>-taxcode IS INITIAL
+                                                                                         THEN <ls_item>-amount * -1
+                                                                                         ELSE lv_taxbaseamount )
                                                         currency = <ls_item>-currency  ) )          ) TO lt_glitem.
           ENDIF.
           <fs_je>-%param = VALUE #( companycode                  = <ls_item>-companycode
@@ -138,9 +180,11 @@
                                     documentdate                 = <ls_item>-physical_operation_date
                                     postingdate                  = <ls_item>-physical_operation_date
                                     accountingdocumentheadertext = <ls_item>-accountingdocumentheadertext
+                                    taxdeterminationdate         = cl_abap_context_info=>get_system_date( )
                                     _apitems                     = VALUE #( FOR wa_apitem  IN lt_apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _aritems                     = VALUE #( FOR wa_aritem  IN lt_aritem  ( CORRESPONDING #( wa_aritem  MAPPING _currencyamount = _currencyamount ) ) )
                                     _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem  ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = _currencyamount ) ) )
+                                    _taxitems                    = VALUE #( FOR wa_taxitem  IN lt_taxitem  ( CORRESPONDING #( wa_taxitem  MAPPING _currencyamount = _currencyamount ) ) )
                                   ).
           MODIFY ENTITIES OF i_journalentrytp
            ENTITY journalentry
@@ -149,7 +193,7 @@
            REPORTED DATA(ls_reported)
            MAPPED DATA(ls_mapped).
           IF ls_failed IS NOT INITIAL.
-            ms_response-messages = VALUE #( base ms_response-messages FOR wa IN ls_reported-journalentry ( message = wa-%msg->if_message~get_text( ) messagetype = mc_error ) ).
+            ms_response-messages = VALUE #( BASE ms_response-messages FOR wa IN ls_reported-journalentry ( message = wa-%msg->if_message~get_text( ) messagetype = mc_error ) ).
           ELSE.
             COMMIT ENTITIES BEGIN
              RESPONSE OF i_journalentrytp
@@ -177,7 +221,7 @@
                               fiscal_year             = VALUE #( ls_commit_reported-journalentry[ 1 ]-fiscalyear OPTIONAL ) ) TO lt_saved_receipts.
 
             ELSE.
-              ms_response-messages = VALUE #( base ms_response-messages FOR wa_commit IN ls_commit_reported-journalentry ( message = wa_commit-%msg->if_message~get_text( ) messagetype = mc_error ) ).
+              ms_response-messages = VALUE #( BASE ms_response-messages FOR wa_commit IN ls_commit_reported-journalentry ( message = wa_commit-%msg->if_message~get_text( ) messagetype = mc_error ) ).
             ENDIF.
           ENDIF.
           CLEAR : lt_je, lt_glitem , lt_apitem , lt_aritem , ls_failed , ls_reported , ls_commit_failed , ls_commit_reported.

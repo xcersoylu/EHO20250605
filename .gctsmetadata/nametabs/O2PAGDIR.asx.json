@@ -198,6 +198,27 @@
     "TYPE":"C",
     "LENGTH":1,
     "DECIMALS":-1
+   },
+   {
+    "NAME":"HASHED_FILENAME",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":32,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"TRANSLATION_ID",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":36,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"NO_TRANSLATION",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":1,
+    "DECIMALS":-1
    }
   ],
   "properties":

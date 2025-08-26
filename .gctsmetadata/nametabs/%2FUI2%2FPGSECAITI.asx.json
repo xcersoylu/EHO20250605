@@ -18,6 +18,13 @@
     "DECIMALS":-1
    },
    {
+    "NAME":"VERSION",
+    "KEY":"X",
+    "TYPE":"C",
+    "LENGTH":1,
+    "DECIMALS":-1
+   },
+   {
     "NAME":"TILE_CATALOG_ID",
     "KEY":"",
     "TYPE":"C",

@@ -33,6 +33,22 @@
   ]
  },
  {
+  "table":"OBJM",
+  "data":
+  [
+   {
+    "OBJECTNAME":"UIPG",
+    "OBJECTTYPE":"L",
+    "METHOD":"AFTER_IMP",
+    "METHODNAME":"/UI2/UIPG_AIM_VERSION",
+    "UPGRADE":"X",
+    "MULTI_OBJ":"",
+    "LANG_OBJ":"X",
+    "SHADOW_SYS":""
+   }
+  ]
+ },
+ {
   "table":"OBJS",
   "data":
   [
@@ -126,9 +142,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGHEAD",
-    "TOBJKEY":"/&",
+    "TOBJKEY":"/&A",
     "MASKNLEN":11,
-    "MASKKLEN":1,
+    "MASKKLEN":2,
     "PRIM_TABLE":"X"
    },
    {
@@ -138,9 +154,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGHEADT",
-    "TOBJKEY":"/L/&",
+    "TOBJKEY":"/L/&A",
     "MASKNLEN":12,
-    "MASKKLEN":2,
+    "MASKKLEN":3,
     "PRIM_TABLE":""
    },
    {
@@ -150,9 +166,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGSEC",
-    "TOBJKEY":"/&/*",
+    "TOBJKEY":"/&A/*",
     "MASKNLEN":10,
-    "MASKKLEN":2,
+    "MASKKLEN":3,
     "PRIM_TABLE":""
    },
    {
@@ -162,9 +178,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGSECT",
-    "TOBJKEY":"/L/&/*",
+    "TOBJKEY":"/L/&A/*",
     "MASKNLEN":11,
-    "MASKKLEN":3,
+    "MASKKLEN":4,
     "PRIM_TABLE":""
    },
    {
@@ -174,9 +190,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGSECAI",
-    "TOBJKEY":"/&/*",
+    "TOBJKEY":"/&A/*",
     "MASKNLEN":12,
-    "MASKKLEN":2,
+    "MASKKLEN":3,
     "PRIM_TABLE":""
    },
    {
@@ -186,9 +202,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGSECAITI",
-    "TOBJKEY":"/&/*",
+    "TOBJKEY":"/&A/*",
     "MASKNLEN":14,
-    "MASKKLEN":2,
+    "MASKKLEN":3,
     "PRIM_TABLE":""
    },
    {
@@ -198,9 +214,9 @@
     "TPGMID":"R3TR",
     "TOBJECT":"TABU",
     "TOBJ_NAME":"/UI2/PGSECAIAD",
-    "TOBJKEY":"/&/*",
+    "TOBJKEY":"/&A/*",
     "MASKNLEN":14,
-    "MASKKLEN":2,
+    "MASKKLEN":3,
     "PRIM_TABLE":""
    }
   ]
